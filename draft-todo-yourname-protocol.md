@@ -68,9 +68,13 @@ The transition to Post-Quantum Cryptography (PQC) is driving the deployment of p
 
 This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ was selected as a national post-quantum cryptography standard in the Republic of Korea in early 2025, following a two-year public evaluation process that included open cryptanalysis and security review {{CHH+23}} {{BCG+24}}. The scheme is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
 
-The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, it summarizes the security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that are relevant to the safe use of NTRU+ in IETF protocols.
+NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS 1.3 {{RFC8446}}, SSH {{RFC4253}}, and IKEv2 {{RFC7296}}. It can also be used in public-key encryption frameworks such as HPKE {{RFC9180}}, where a KEM is used to establish shared secret material between communicating parties.
 
-NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS 1.3 {{RFC8446}}, SSH {{RFC4253}}, and IKEv2 {{RFC7296}}. It can also be used in public-key encryption frameworks such as HPKE {{RFC9180}}, where a KEM is used to establish shared secret material between communicating parties. The security considerations in this document are intended to assist protocol designers and implementers in deploying NTRU+ securely in such environments.
+The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, it provides guidance for the safe use of NTRU+ in IETF protocols. The document summarizes the security assumptions, security properties, implementation requirements, validation procedures, failure-handling requirements, side-channel considerations, and protocol-relevant caveats that protocol designers and implementers should consider when deploying NTRU+ in practice.
+
+The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, the security considerations in this document is intended to assist protocol designers and implementers in deploying NTRU+ securely in those application settings. It summarizes the security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that are relevant to the safe use of NTRU+ in IETF protocols.
+
+
 
 # Conventions and Definitions
 
