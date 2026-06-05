@@ -70,10 +70,7 @@ This document provides security considerations for NTRU+, a lattice-based KEM de
 
 NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS 1.3 {{RFC8446}}, SSH {{RFC4253}}, and IKEv2 {{RFC7296}}. It can also be used in public-key encryption frameworks such as HPKE {{RFC9180}}, where a KEM is used to establish shared secret material between communicating parties.
 
-The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, it provides guidance for the safe use of NTRU+ in IETF protocols. The document summarizes the security assumptions, security properties, implementation requirements, validation procedures, failure-handling requirements, side-channel considerations, and protocol-relevant caveats that protocol designers and implementers should consider when deploying NTRU+ in practice.
-
-The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, the security considerations in this document is intended to assist protocol designers and implementers in deploying NTRU+ securely in those application settings. It summarizes the security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that are relevant to the safe use of NTRU+ in IETF protocols.
-
+The purpose of this document is to provide guidance for the safe use of NTRU+ in IETF protocols. The document summarizes the security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that protocol designers and implementers should consider when deploying NTRU+ in practice.
 
 
 # Conventions and Definitions
