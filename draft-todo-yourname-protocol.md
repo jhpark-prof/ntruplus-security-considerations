@@ -111,7 +111,7 @@ The purpose of this document is to provide guidance for the safe use of NTRU+ in
 
 ## Scheme Description
     
-Following NTTRU {{NTTRU}}, NTRU+ operates over a polynomial ring R defined by a cyclotomic trinomial, enabling efficient polynomial multiplication through the Number Theoretic Transform (NTT). 
+Following NTTRU {{NTTRU}}, NTRU+ operates over a polynomial ring R defined by a cyclotomic trinomial, enabling efficient polynomial multiplication through the Number Theoretic Transform (NTT). The coefficients of all polynomials in NTRU+ are sampled from a set {-1, 0, 1}, according to the Centered Binomial Distribution. 
 
 ### Key Generation
 
