@@ -64,9 +64,9 @@ TODO Abstract
 
 # Introduction
 
-The transition to Post-Quantum Cryptography (PQC) is driving the deployment of post-quantum key encapsulation mechanisms (KEMs) in Internet protocols. KEMs are expected to replace or complement traditional Diffie-Hellman-based key establishment mechanisms in protocols such as TLS, IKE, and other secure communication systems.
+The transition to Post-Quantum Cryptography (PQC) is driving the deployment of post-quantum key encapsulation mechanisms (KEMs) in Internet protocols. KEMs are expected to replace or complement traditional Diffie-Hellman key establishment mechanisms in protocols such as TLS, IKE, and other secure communication systems.
 
-This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ was selected as a national post-quantum cryptography standard in the Republic of Korea in early 2025 following a two-year public evaluation process that included open cryptanalysis and security review {{CHH+23}}, {{BCG+24}}. The scheme is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
+This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ was selected as a national post-quantum cryptography standard in the Republic of Korea in early 2025, following a two-year public evaluation process that included open cryptanalysis and security review {{CHH+23}}, {{BCG+24}}. The scheme is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
 
 The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, it summarizes the assumptions, security properties, implementation requirements, validation procedures, failure handling requirements, and protocol-relevant caveats that are relevant to the safe use of NTRU+ in IETF protocols.
 
