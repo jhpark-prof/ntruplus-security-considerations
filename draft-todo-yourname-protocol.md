@@ -77,6 +77,18 @@ The purpose of this document is to provide guidance for the safe use of NTRU+ in
 
 ## Scheme Description
 
+Following NTTRU {{NTTRU}}, NTRU+ works with a ring R charaterized by cyclotomic trinomials such that the Number Theoretic Transform (NTT) can be computed efficiently.     
+
+
+### Key Generation
+
+
+### Encapsulation
+
+
+### Decapsulation
+
+
 
 ## Parameter Sets
 
