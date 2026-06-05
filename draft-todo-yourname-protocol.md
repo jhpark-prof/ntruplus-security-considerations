@@ -68,7 +68,7 @@ The transition to Post-Quantum Cryptography (PQC) is driving the deployment of p
 
 This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ was selected as a national post-quantum cryptography standard in the Republic of Korea in early 2025, following a two-year public evaluation process that included open cryptanalysis and security review {{CHH+23}} {{BCG+24}}. The scheme is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
 
-The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, it summarizes the security assumptions, implementation requirements, validation procedures, failure handling requirements, and protocol-relevant caveats that are relevant to the safe use of NTRU+ in IETF protocols.
+The purpose of this document is not to evaluate or compare NTRU+ against other KEMs. Instead, it summarizes the security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that are relevant to the safe use of NTRU+ in IETF protocols.
 
 NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace Diffie-Hellman-based key establishment mechanisms in authenticated key exchange protocols, including deployments in TLS and IKE. It can also be used in public-key encryption frameworks such as Hybrid Public Key Encryption (HPKE), where a KEM is used to establish shared secret material between communicating parties. The security considerations in this document are intended to assist protocol designers and implementers in deploying NTRU+ securely in such environments.
 
