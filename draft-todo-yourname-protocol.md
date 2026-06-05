@@ -73,9 +73,12 @@ NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or
 The purpose of this document is to provide guidance for the safe use of NTRU+ in IETF protocols. The document summarizes security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that protocol designers and implementers should consider when deploying NTRU+ in practice.
 
 
-# Conventions and Definitions
+# NTRU+ Overview
 
-{::boilerplate bcp14-tagged}
+## Scheme Description
+
+
+## Parameter Sets
 
 
 # Security Considerations
