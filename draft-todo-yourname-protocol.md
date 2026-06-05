@@ -52,6 +52,40 @@ author:
 normative:
 
 informative:
+  KpqC2025:
+    title: "KpqC Competition"
+    author:
+      -
+        org: KpqC
+    date: 2025
+    target: https://www.kpqc.or.kr/
+
+  CHH23:
+    title: "TODO: Full title of the CHH paper"
+    author:
+      -
+        ins: TODO
+        name: TODO
+    date: 2023
+    target: https://example.com/TODO-CHH23
+
+  BCG24:
+    title: "TODO: Full title of the BCG paper"
+    author:
+      -
+        ins: TODO
+        name: TODO
+    date: 2024
+    target: https://example.com/TODO-BCG24
+
+  NTTRU:
+    title: "NTTRU: Efficient and Secure NTRU-Based KEM"
+    author:
+      -
+        ins: TODO
+        name: TODO
+    date: 2024
+    target: https://example.com/TODO-NTTRU
 
 ...
 
@@ -66,9 +100,9 @@ TODO Abstract
 
 The transition to Post-Quantum Cryptography (PQC) is driving the deployment of post-quantum key encapsulation mechanisms (KEMs) in Internet protocols. KEMs are expected to replace or complement traditional Diffie-Hellman key establishment mechanisms in protocols such as TLS, IKE, and other secure communication systems.
 
-This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ {{KpqC2025}} was selected as a national post-quantum cryptography standard in the Republic of Korea in early 2025, following a two-year public evaluation process that included open cryptanalysis and security review {{CHH+23}} {{BCG+24}}. NTRU+ is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
+This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ {{KpqC2025}} was selected as a national post-quantum cryptography standard in the Republic of Korea in early 2025, following a two-year public evaluation process that included open cryptanalysis and security review {{CHH23}} {{BCG24}}. NTRU+ is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
 
-NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS 1.3 {{RFC8446}}, SSH {{RFC4253}}, and IKEv2 {{RFC7296}}. It can also be used in public-key encryption frameworks such as HPKE {{RFC9180}}, where a KEM is used to establish shared secret material between communicating parties.
+NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS 1.3 {{?RFC8446}}, SSH {{?RFC4253}}, and IKEv2 {{?RFC7296}}. It can also be used in public-key encryption frameworks such as HPKE {{?RFC9180}}, where a KEM is used to establish shared secret material between communicating parties.
 
 The purpose of this document is to provide guidance for the safe use of NTRU+ in IETF protocols. The document summarizes security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that protocol designers and implementers should consider when deploying NTRU+ in practice.
 
