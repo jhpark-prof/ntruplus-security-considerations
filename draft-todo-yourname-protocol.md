@@ -115,7 +115,7 @@ Following NTTRU {{NTTRU}}, NTRU+ operates over a polynomial ring R defined by a 
 
 ### Key Generation
 
-The key generation algorithm (see section 6.3.1 of {{KpqC2025}}) takes as input two 32-byte random bits, which should be obtained from an approved RBG, and produces both a public key pk and a private key sk. The two 32-byte random bits are used to generate two short polynomials f and g, respectively, whose coefficients are sampled from CBD.
+The key generation algorithm (see section 6.3.1 of {{KpqC2025}}) takes as input two 32-byte random bits, which should be obtained from an approved RBG, and produces both a public key pk and a private key sk. The two 32-byte random bits are used to generate two short polynomials f and g, respectively, whose coefficients are sampled from CBD. Rejection sampling can happen in the key generation of NTRU+ by checking whether or not each polynomial is invertible in R. If f is not invertible, new 32-byte random bits are feeded to generate a new polynomial f, and this is the same for the case of g. The public key pk is h in the NTT format, and the private key sk consists of (f, inverse of h, Hashed pk), where f and the inverse of h are in the NTT format. Once the key generation is completed, the random bytes used should be removed in a secure manner.  
 
 ### Encapsulation
 
