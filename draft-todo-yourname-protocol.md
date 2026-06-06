@@ -125,7 +125,7 @@ The NTRU+ key-generation algorithm does not include a Pair-wise Consistency Test
 
 ### Encapsulation
 
-The encapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) requires an n-bit random message as input, where n denotes the degree of the underlying polynomial in the ring R. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a shared secret K. 
+The encapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) requires an n-bit random message as input, where n denotes the degree of the underlying polynomial in the ring R. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K. 
 
 The shared secret K and an intermediate randomness r are derived from the random message and H(pk) using a hash function. The inclusion of H(pk) in this derivation is intended to provide resistance against multi-target attacks. 
 
@@ -135,7 +135,7 @@ After encapsulation is completed, the n-bit random message SHOULD be securely er
 
 ### Decapsulation
 
-The decapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) takes as input a ciphertext c and the private key sk = (f, h^{-1}, H(PK)). The algorithm outputs either a shared secret K for a valid ciphertext or a decapsulation error for an invalid ciphertext. Thus, NTRU+ employs explicit rejection for invalid ciphertexts rather than deriving and returning a pseudorandom key.  
+The decapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) takes as input a ciphertext c and the private key sk = (f, h^{-1}, H(PK)). The algorithm outputs either a 32-byte shared secret K for a valid ciphertext or a decapsulation error for an invalid ciphertext. Thus, NTRU+ employs explicit rejection for invalid ciphertexts rather than deriving and returning a pseudorandom key.  
 
 Using f and h^{-1}, the decapsulation algorithm recovers candidate values of r and m from the ciphertext c. The recovered values are then processed using the SOTP decoding operation, producing an n-bit message m' (denoted as m' in Algorithm 13 of {{KpqC2025}}). This decoding procedure always produces an output message, regardless of whether a decoding error occurs. 
 
