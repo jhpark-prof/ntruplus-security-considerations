@@ -191,7 +191,7 @@ Table of Contents
    a candidate shared secret K and an intermediate randomness r'
    (denoted as r' in Algorithm 13 of [KpqC2025]).  Subsequently, two
    validation checks are performed.  The first verifies that the SOTP
-   decoding succeeds withput error.  The second verifies that the
+   decoding succeeds without error.  The second verifies that the
    recovered polynomial r matches the regenerated randomness r'.  Only
    if both checks succeed is the shared secret K accepted; otherwise,
    the decapsulation algorithm returns an error.
