@@ -1216,7 +1216,7 @@ svg {
           <h4 id="name-key-generation">
 <a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-key-generation" class="section-name selfRef">Key Generation</a>
           </h4>
-<p id="section-2.1.1-1">The key generation algorithm (see section 6.3.1 of <span>[<a href="#KpqC2025" class="cite xref">KpqC2025</a>]</span>) takes as input two 32-byte random bits, which should be obtained from an approved RBG, and produces both a public key pk and a private key sk. The two 32-byte random bits are used to generate two short polynomials f and g, respectively, whose coefficients are sampled from CBD.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-1">The key generation algorithm (see section 6.3.1 of <span>[<a href="#KpqC2025" class="cite xref">KpqC2025</a>]</span>) takes as input two 32-byte random bits, which should be obtained from an approved RBG, and produces both a public key pk and a private key sk. The two 32-byte random bits are used to generate two short polynomials f and g, respectively, whose coefficients are sampled from CBD. Rejection sampling can happen in the key generation of NTRU+ by checking whether or not each polynomial is invertible in R. If f is not invertible, new 32-byte random bits are feeded to generate a new polynomial f, and this is the same for the case of g. The public key pk is h in the NTT format, and the private key sk consists of (f, inverse of h, Hashed pk), where f and the inverse of h are in the NTT format. Once the key generation is completed, the random bytes used should be removed in a secure manner.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="encapsulation">
