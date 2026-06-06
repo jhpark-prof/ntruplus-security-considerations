@@ -192,9 +192,9 @@ Table of Contents
    (denoted as r' in Algorithm 13 of [KpqC2025]).  Subsequently, two
    validation checks are performed.  The first verifies that the SOTP
    decoding succeeds withput error.  The second verifies that the
-   recovered polynomial r matches the regenerated value r'.  Only if
-   both checks succeed is the shared secret K accepted; otherwise, the
-   decapsulation algorithm returns a decapsulation error.
+   recovered polynomial r matches the regenerated randomness r'.  Only
+   if both checks succeed is the shared secret K accepted; otherwise,
+   the decapsulation algorithm returns a decapsulation error.
 
 2.2.  Parameter Sets
 
