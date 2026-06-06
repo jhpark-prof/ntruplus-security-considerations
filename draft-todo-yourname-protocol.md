@@ -119,9 +119,9 @@ The key generation algorithm (see Section 6.3.1 of {{KpqC2025}}) takes as input 
 
 Key generation employs rejection sampling to ensure that both polynomials are invertible in the ring R. If a generated polynomial f is not invertible, a new 32-byte seed is used to generate a replcement polynomial. The same procedure is applied to g. 
 
-The public key consists of the polynomial h represented in NTT form. The private key consists of (f, h^{-1}, H(PK)), where both f and h^{-1} are stored in NTT form and H(pk) denotes a hash of the public key. 
+The public key consists of the polynomial h represented in NTT form. The private key consists of (f, h^{-1}, H(PK)), where both f and h^{-1} are stored in NTT form and H(pk) denotes a hash of the public key. After key generation is completed, the random seeds used to geneate f and g SHOULD be securely erased. 
 
-After key generation is completed, the random seeds used to geneate f and g SHOULD be securely erased. The NTRU+ key-generation algorithm does not include a Pair-wise Consistency Test (PCT). Although a PCT could be incorporated as an optional self-test by extending the key-generation procedure, it is not part of the current specification. This document therefore considers only the standard key-generation procedure defined in {{KpqC2025}}.     
+The NTRU+ key-generation algorithm does not include a Pair-wise Consistency Test (PCT). Although a PCT could be incorporated as an optional self-test by extending the key-generation procedure, it is not part of the current specification. This document therefore considers only the standard key-generation procedure defined in {{KpqC2025}}.     
 
 ### Encapsulation
 
