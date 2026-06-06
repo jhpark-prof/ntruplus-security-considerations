@@ -139,7 +139,7 @@ The decapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) takes as input a
 
 Using f and h^{-1}, the decapsulation algorithm recovers candidate values of r and m from the ciphertext c. The recovered values are then processed using the SOTP decoding operation, producing an n-bit message m' (denoted as m' in Algorithm 13 of {{KpqC2025}}). This decoding procedure always produces an output message, regardless of whether a decoding error occurs. 
 
-The recovered message m', together with H(pk), is used to derive both a candidate shared secret K and an intermediate randomness r' (denoted as r' in Algorithm 13 of {{KpqC2025}}). Subsequently, two validation checks are performed. The first verifies that the SOTP decoding succeeds withput error. The second verifies that the recovered polynomial r matches the regenerated value r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
+The recovered message m', together with H(pk), is used to derive both a candidate shared secret K and an intermediate randomness r' (denoted as r' in Algorithm 13 of {{KpqC2025}}). Subsequently, two validation checks are performed. The first verifies that the SOTP decoding succeeds withput error. The second verifies that the recovered polynomial r matches the regenerated randomness r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
      
 
