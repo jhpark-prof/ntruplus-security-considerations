@@ -115,6 +115,8 @@ Following NTTRU {{NTTRU}}, NTRU+ operates over a polynomial ring R defined by a 
 
 ### Key Generation
 
+The key generation algorithm (see section 6.3.1 of {{KpqC2025}}) takes as input two 32-byte random bits, which should be obtained from an approved RBG, and produces both a public key pk and a private key sk.
+
 
 ### Encapsulation
 
