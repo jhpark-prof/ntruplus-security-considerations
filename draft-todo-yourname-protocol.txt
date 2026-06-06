@@ -180,6 +180,11 @@ Table of Contents
    NTRU+ employs explicit rejection for invalid ciphertexts rather than
    deriving and returning a pseudorandom key.
 
+   The algorithm SHOULD first verify that the ciphertext (c) is properly
+   formed.  In particular, each coefficient of the ciphertext polynomial
+   MUST be checked to ensure that it lies within the valid range defined
+   by the modulus.
+
    Using f and h^{-1}, the decapsulation algorithm recovers candidate
    values of r and m from the ciphertext c.  The recovered values are
    then processed using the SOTP decoding operation, producing an n-bit
