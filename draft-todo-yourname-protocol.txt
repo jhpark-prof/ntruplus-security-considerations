@@ -194,7 +194,7 @@ Table of Contents
    decoding succeeds withput error.  The second verifies that the
    recovered polynomial r matches the regenerated randomness r'.  Only
    if both checks succeed is the shared secret K accepted; otherwise,
-   the decapsulation algorithm returns a decapsulation error.
+   the decapsulation algorithm returns an error.
 
 2.2.  Parameter Sets
 
