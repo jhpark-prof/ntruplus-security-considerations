@@ -135,7 +135,13 @@ After encapsulation is completed, the n-bit random message SHOULD be securely er
 
 ### Decapsulation
 
-The decapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) takes as input a ciphertext c and the private key sk = (f, h^{-1}, H(PK)). The algorithm outputs a shared secret K or an error symbol. Using f and h^{-1} in the private key, both r and m are recovered from the ciphertext c  
+The decapsulation algorithm (see Section 6.3.1 of {{KpqC2025}}) takes as input a ciphertext c and the private key sk = (f, h^{-1}, H(PK)). The algorithm outputs either a shared secret K for a valid ciphertext or a decapsulation error for an invalid ciphertext. Thus, NTRU+ employs explicit rejection for invalid ciphertexts rather than deriving and returning a pseudorandom key.  
+
+Using f and h^{-1}, the decapsulation algorithm recovers candidate values of r and m from the ciphertext c. The recovered values are then processed using the SOTP decoding operation, producing an n-bit message m' (denoted as m' in Algorithm 13 of {{KpqC2025}}). This decoding procedure always produces an output message, regardless of whether a decoding error occurs. 
+
+The recovered message m', together with H(pk), is used to derive both a candidate shared secret K and an intermediate randomness r' (denoted as r' in Algorithm 13 of {{KpqC2025}}). Subsequently, two validation checks are performed. The first verifies that the SOTP decoding succeeds withput error. The second verifies that the recovered polynomial r matches the regenerated value r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
+
+     
 
 ## Parameter Sets
 
