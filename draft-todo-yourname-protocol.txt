@@ -217,6 +217,12 @@ Table of Contents
 
 2.2.  Parameter Sets
 
+   NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and
+   NTRU+1152.  Table 1 summarizes the sizes of the cryptographic
+   material associated with each parameter set, together with the
+   estimated classical security levels obtained using the Lattice
+   Estimator [APS15].
+
 3.  Security Considerations
 
    TODO Security
@@ -226,6 +232,10 @@ Table of Contents
    This document has no IANA actions.
 
 5.  Informative References
+
+   [APS15]    TODO, "Lattice estimator", 2024, <https://github.com/malb/
+              lattice-estimator/
+              tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463>.
 
    [BCG24]    TODO, "TODO: Full title of the BCG paper", 2024,
               <https://example.com/TODO-BCG24>.
