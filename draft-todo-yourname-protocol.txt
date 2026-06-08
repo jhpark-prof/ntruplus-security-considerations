@@ -224,8 +224,7 @@ Table of Contents
    Estimator [APS15].
 
    +==========+===========+===========+======+=====+=====+=====+=== | |
-   pk size | sk size | ct size | ss size | security | | | | | | |
-   level |
+   pk size | sk size | ct size | ss size | security |
    +============+============+============+============+==========+ |
    NTRU+768 | 1152 | 2336 | 1152 | 32 | 156 |
    +-------------+------------+------------+------------+---------+ |
@@ -235,8 +234,8 @@ Table of Contents
    +-------------+------------+------------+------------+---------+
 
    Table 1: pk = public key, sk = private key, ct = ciphertext, ss =
-   shared secret, all lengths of pk, sk, ct, and ss in bytes, security
-   level in bits
+   shared secret.  Key, ciphertext, and shared-secret sizes are given in
+   bytes.  Security levels are given in bits.
 
    Table 2 presents
 
