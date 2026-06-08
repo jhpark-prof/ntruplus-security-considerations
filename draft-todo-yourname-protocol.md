@@ -162,15 +162,15 @@ Upon completion of decapsulation, all intermediate values, including recovered p
 
 NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 summarizes the sizes of the cryptographic material associated with each parameter set, together with the estimated classical security levels obtained using the Lattice Estimator {{APS15}}.
 
-+===========+======+======+======+======+==========+
-|           |  pk  |  sk  |  ct  |  ss  | security |
-+===========+======+======+======+======+==========+
-| NTRU+768  | 1152 | 2336 | 1152 |  32  |   156    |
-+-----------+------+------+------+------+----------+
-| NTRU+864  | 1296 | 2624 | 1296 |  32  |   179    |
-+-----------+------+------+------+------+----------+
-| NTRU+1152 | 1728 | 3488 | 1728 |  32  |   248    |
-+-----------+------+------+------+------+----------+
++============+========+========+========+========+==========+
+|            |   pk   |   sk   |   ct   |   ss   | security |
++============+========+========+========+========+==========+
+|  NTRU+768  |  1152  |  2336  |  1152  |   32   |   156    |
++------------+--------+--------+--------+--------+----------+
+|  NTRU+864  |  1296  |  2624  |  1296  |   32   |   179    |
++------------+--------+--------+--------+--------+----------+
+|  NTRU+1152 |  1728  |  3488  |  1728  |   32   |   248    |
++------------+--------+--------+--------+--------+----------+
 
 Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
