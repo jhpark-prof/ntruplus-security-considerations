@@ -184,12 +184,15 @@ Table of Contents
    The algorithm SHOULD first verify that the ciphertext c is properly
    formed.  In particular, each coefficient of the ciphertext polynomial
    MUST be checked to ensure that it lies within the valid range defined
-   by the modulus.  If the check passes, the decapsulation algorithm
-   recovers candidate values of r and m from the ciphertext c using f
-   and h^{-1}. The recovered values are then processed using the SOTP
-   decoding operation, producing an n-bit message m' (denoted as m' in
-   Algorithm 13 of [KpqC2025]).  This decoding procedure always produces
-   an output message, regardless of whether a decoding error occurs.
+   by the modulus q.  If this validation fails, the algorithm MUST
+   return a decapsulation error.  Otherwise, candidate values of r and m
+   are recovered from the ciphertext c using f and h^{-1}.
+
+   The recovered values are then processed using the SOTP decoding
+   operation, yielding an n-bit message m' (denoted as m' in Algorithm
+   13 of [KpqC2025]).  This decoding procedure does not immediately
+   signal failure; instead, it always produces an n-bit output message
+   at this stage, regardless of whether a decoding error has occured.
 
    The recovered message m', together with H(pk), is used to derive both
    a candidate shared secret K and an intermediate randomness ρ'
