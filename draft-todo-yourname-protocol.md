@@ -164,7 +164,6 @@ NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 
 
 +==========+===========+===========+======+=====+=====+=====+===
 |           | pk size | sk size | ct size | ss size | security |
-|           |         |         |         |         |   level  |      
 +============+============+============+============+==========+
 | NTRU+768  |   1152  |  2336   |  1152   |   32    |   156    |
 +-------------+------------+------------+------------+---------+
@@ -173,7 +172,7 @@ NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 
 | NTRU+1152 |   1728  |  3488   |  1728   |   32    |   248    |
 +-------------+------------+------------+------------+---------+
 
-Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret, all lengths of pk, sk, ct, and ss in bytes, security level in bits
+Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
 Table 2 presents 
 
