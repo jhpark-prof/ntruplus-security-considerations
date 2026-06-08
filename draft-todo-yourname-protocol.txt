@@ -235,7 +235,7 @@ Table of Contents
    +-------------+------------+------------+------------+------------+------------+
 
    Table 1: pk = public key, sk = private key, ct = ciphertext, ss =
-   shared secret, all lengths in bytes
+   shared secret, all lengths in bytes, security level in bits.
 
    Table 2 presents
 
