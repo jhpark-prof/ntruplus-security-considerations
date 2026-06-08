@@ -87,6 +87,15 @@ informative:
     date: 2024
     target: https://example.com/TODO-NTTRU
 
+  APS15:
+    title: "Lattice estimator"
+    author:
+      -
+        ins: TODO
+        name: TODO
+    date: 2024
+    target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
+
 ...
 
 --- abstract
@@ -151,8 +160,7 @@ Upon completion of decapsulation, all intermediate values, including recovered p
 
 ## Parameter Sets
 
-
-
+NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 summarizes the sizes of the cryptographic material associated with each parameter set, together with the estimated classical security levels obtained using the Lattice Estimator {{APS15}}.
 
 
 # Security Considerations
