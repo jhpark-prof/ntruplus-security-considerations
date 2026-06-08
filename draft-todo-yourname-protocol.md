@@ -145,9 +145,12 @@ The SOTP-recovered message m', together with H(pk), is used to derive both a can
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
-To avoid creating an error oracle, implementations SHOULD perform both validation checks unconditionally and combine their results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed.     
+To avoid creating an error oracle, implementations SHOULD perform both validation checks unconditionally and combine their results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed. Upon completion of decapsulation, all intermediate values, including recovered polynomials, messages, randomness values, and candiate shared secrets, SHOULD be securely erased.    
 
 ## Parameter Sets
+
+
+
 
 
 # Security Considerations
