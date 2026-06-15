@@ -174,7 +174,7 @@ NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 
 
 Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
-Table 2 presents 
+Table 2 summarizes the performance measurements of the NTRU+ algorithms for each parameter set.
 
 
 # Security Considerations
