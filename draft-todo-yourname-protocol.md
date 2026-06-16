@@ -213,7 +213,7 @@ As with other lattice-based KEMs, decapsulation failures may potentially leak in
 
 The IND-CCA2 security of NTRU+ is based on the hardness of the NTRU and Ring-LWE problems and, in particular, admits a tight security reduction in the random oracle model. The security proof begins with the construction of an underlying NTRU encryption scheme (denoted as GenNTRU in {{KpqC2025}}), which is OW-CPA secure under the NTRU and Ring-LWE assumptions. 
 
-The explicit rejection of invalid ciphertexts follows from the (statistical) 𝛾-spreadness property of GenNTRU, while the re-encryption-free FO transform relies on the rigidity properties of both GenNTRU and SOTP.  
+The explicit rejection of invalid ciphertexts follows from the 𝛾-spreadness property of GenNTRU, while the re-encryption-free FO transform relies on the rigidity properties of both GenNTRU and SOTP.  
 
 
 ## Rejection Sampling in the key generation
