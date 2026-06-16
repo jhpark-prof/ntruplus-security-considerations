@@ -200,7 +200,7 @@ Table 2: Single-core performance in operations per second on AMD Ryzen 7 7700
 
 # NTRU+ Security Considerations
 
-## Security properties
+## Correctness and Security properties
 
 Historically, achieving negligible worst-case correctness error has been a significant challenge in NTRU-based public-key encryption schemes. In classical NTRU encryption, an adversary may construct ciphertexts of the form c = hr + m by choosing r or m maliciously, making it difficult to achieve negligible worst-case correctness errors for all possible ciphertexts.
 
@@ -211,13 +211,10 @@ This result builds upon {{DHK21}} and extends the analysis to the CBD sampling u
 As with other lattice-based KEMs, decapsulation failures may potentially leak information about the private key. However, NTRU+ is designed so that the probability of a decapsulation failure for an honestly generated ciphertext is negligible, rendering such failures irrelevant in practice. 
 
 
+The IND-CCA2 security of NTRU+ is based on the hardness of the NTRU and Ring-LWE problems and, in particular, admits a tight security reduction in the random oracle model. The security proof begins with the construction of an underlying NTRU encryption scheme (denoted as GenNTRU in {{KpqC2025}}), which is OW-CPA secure under the NTRU and Ring-LWE assumptions. 
 
+The explicit rejection of invalid ciphertexts follows from the (statistical) 𝛾-spreadness property of GenNTRU, while the re-encryption-free FO transform relies on the rigidity properties of both GenNTRU and SOTP.  
 
-The IND-CCA2 security of NTRU+ is based on the NTRU and Ring LWE problems and, in particularly, can be tightly proven under those hardness assumptions in the random oracle model. 
-
-security assumption, worst-case correctness error, \gamma-spreadness, rigidity of GenNTRU and SOTP, IND-CCA2 secure
-
-If decapsulation error occurs, the information on sk can be leaked.
 
 ## Rejection Sampling in the key generation
 The invertiblility of the polynomial f or g can be done effectively by using a batch inversion 
