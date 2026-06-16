@@ -228,7 +228,15 @@ The explicit rejection of invalid ciphertexts follows from the 𝛾-spreadness p
 
 ## Rejection Sampling in the key generation
 
-The key generation process uses rejection sampling: internally, until two polynomials f and g are invertible in the ring R, a fresh 32-byte random seed SHOULD be called from an approved RBG. The probability that a small polynomial is invertible in R is at least 0.99 in NTRU+768 and NTRU+864 and 0.71 in NTRU+1152, and thus the probability that key generation succeeds is about 0.99 in NTRU+768 and NTRU+864 and about 0.51 in NTRU+1152. The key generation of NTRU+ is very fast (see Table 2) and thus on average, two executions of key generation is not a burden in NTRU+1152. The rejection sampliong means that key generation time of NTRU+ has some variance. Polynomial inversion in NTT format can be efficiently performed by using hierarchical batch inversion technique {{KCP26}} as Montgomery's trick.             
+The key generation process employs rejection sampling. Specifically, fresh 32-byte random seeds SHOULD be obtained from an approved RBG until both polynomials f and g are invertible in the ring R.
+
+The probability that a randomly generated small polynomial is invertible in R is at least 0.99 for NTRU+768 and NTRU+864,  and approximately 0.71 for NTRU+1152. Consequently, the probability that both f and g are invertible is approximately 0.99 for NTRU+768 and NTRU+864, and approximately 0.51 in NTRU+1152. 
+
+As shown in Table 2, key generation in NTRU+ is computationally efficient. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of attempts is less than two, and the resulting overhead is negligible in practice.
+
+The use of rejection sampling implies that the execution time of key generation is not strictly constant and exhibits some variance. However, this timing variation depends only on the randomness used during key generation and does not affect the security of the generated key pair.
+
+Polynomial inversion in NTT represendation can be efficiently implemented using the hierarchical batch inversion technique of {{KCP26}}, which applies Montgomery's trick to reduce the number of field inversions.             
 
 
 
