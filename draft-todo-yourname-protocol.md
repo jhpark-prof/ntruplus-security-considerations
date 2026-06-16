@@ -202,11 +202,13 @@ Table 2: Single-core performance in operations per second on AMD Ryzen 7 7700
 
 ## Security properties
 
-Historically, achieving worst-case correctness error has been a significant challenge in NTRU-based public-key encryption schemes. In NTRU encryption, an adversary may construct ciphertexts of the form c = hr + m by choosing r and m maliciously, making it difficult to achieve negligible correctness errors for all possible ciphertexts.
+Historically, achieving negligible worst-case correctness error has been a significant challenge in NTRU-based public-key encryption schemes. In classical NTRU encryption, an adversary may construct ciphertexts of the form c = hr + m by choosing r or m maliciously, making it difficult to achieve negligible worst-case correctness errors for all possible ciphertexts.
 
 To address this issue, NTRU+ employs two techniques. First, the polynomial r is deterministically derived through the Fujisaki-Okamoto (FO) transform. Second, the polynomial m is generated through the SOTP encoding procedure. As a result, an adversary no longer has direct control over the values of r and m appearing in honestly generated ciphertexts.
 
-This result builds upon {{DHK21}} and extends the analysis to the CBD sampling used in NTRU+. As with other lattice-based KEMs, decapsulation failures may potentially leak information about the private key. However, NTRU+ is designed to eliminate such failures for honestly generated ciphertexts, making such failures irrelevant in practice. 
+This result builds upon {{DHK21}} and extends the analysis to the CBD sampling used in NTRU+, where all coefficients of r and m are sampled according to the CBD. Consequently, the worst-case correctness error of NTRU+ reduces to the average-case correctness error associated with honestly generated ciphertexts following the CBD. 
+
+As with other lattice-based KEMs, decapsulation failures may potentially leak information about the private key. However, NTRU+ is designed so that the probability of a decapsulation failure for an honestly generated ciphertext is negligible, rendering such failures irrelevant in practice. 
 
 
 
