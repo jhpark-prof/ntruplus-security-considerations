@@ -240,7 +240,7 @@ Polynomial inversion in NTT represendation can be efficiently implemented using 
 
 
 ## A possible PCT process
-The above key generation of NTRU+ does not consider the PCT process. However, if necessary, an approved implementation performs a simple PCT process on each freshly generated keypair, which is the same as in FIPS 203. That is, using the new keypair, the implementation performs an ephemeral key exchange by itself by doing an encapsulation and a decapsulation successively.  
+The key-generation procedure described above does not include a Pair-wise Consistency Test (PCT). However, implementations seeking compliance with FIPS 140-3 validation requirements MAY perform a PCT on each newly generated key pair. Following the approach used for ML-KEM in FIPS 203 implementations, the module performs an encapsulation and a subsequent decapsulation using the newly generated key pair and verifies that both operations derive the same shared secret.
 
 
 PCT is possible in key generation, but this draft does not introduce it. in case of long-term static public/private key pairs, before a decapsulation, (pk, sk) can be checked through PCT to ensure that (pk, sk) are generated correctly by the key generation algorithm without errors inserted, where sk=(f, h^{-1}, H(pk)) and pk before decapsulation. PCT can be used to ensure that (pk, sk) are not modified. 
