@@ -239,8 +239,10 @@ The use of rejection sampling implies that the execution time of key generation 
 Polynomial inversion in NTT represendation can be efficiently implemented using the hierarchical batch inversion technique of {{KCP26}}, which applies Montgomery's trick to reduce the number of field inversions.             
 
 
+## A possible PCT process
+The above key generation of NTRU+ does not consider the PCT process. However, if necessary, an approved implementation performs a simple PCT process on each freshly generated keypair, which is the same as in FIPS 203. That is, using the new keypair, the implementation performs an ephemeral key exchange by itself by doing an encapsulation and a decapsulation successively.  
 
-## A possible PCT in the key generation
+
 PCT is possible in key generation, but this draft does not introduce it. in case of long-term static public/private key pairs, before a decapsulation, (pk, sk) can be checked through PCT to ensure that (pk, sk) are generated correctly by the key generation algorithm without errors inserted, where sk=(f, h^{-1}, H(pk)) and pk before decapsulation. PCT can be used to ensure that (pk, sk) are not modified. 
 
 ## The n-bit random strings for generating a 32-byte shared secret
