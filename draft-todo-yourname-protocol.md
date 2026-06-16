@@ -242,10 +242,8 @@ Polynomial inversion in NTT represendation can be efficiently implemented using 
 ## A possible PCT process
 The NTRU+ key-generation procedure described above does not include a Pair-wise Consistency Test (PCT). Implementations seeking FIPS 140-3 validation MAY perform a PCT following CMVP guidance by executing an encapsulation and a subsequent decapsulation using a newly generated key pair and verifying that both operations derive the same shared secret. While such a test can reliably detect non-functional key pairs, it provides only limited assurance against malformed or fault-induced keys that continue to operate correctly on honestly generated ciphertexts.
 
-As noted in 
+However, we note that NTRU+ may admit a more direct form of PCT than the encapsulation-decapsulation test described above. In particular, it may be possible to verify certain mathematical consistency relations between the public key pk=h and the private key sk=(f, h^{-1}, H(pk)) by exploiting properties of the SOTP encoding and the CBD-based construction used in NTRU+. However, incorporating such a PCT would require modest changes to the current key-generation algorithm.
 
-However, in case of NTRU+, a more direct
-PCT is possible in key generation, but this draft does not introduce it. in case of long-term static public/private key pairs, before a decapsulation, (pk, sk) can be checked through PCT to ensure that (pk, sk) are generated correctly by the key generation algorithm without errors inserted, where sk=(f, h^{-1}, H(pk)) and pk before decapsulation. PCT can be used to ensure that (pk, sk) are not modified. 
 
 ## The n-bit random strings for generating a 32-byte shared secret
 
