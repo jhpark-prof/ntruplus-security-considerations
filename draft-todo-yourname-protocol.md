@@ -206,7 +206,7 @@ Historically, achieving negligible worst-case correctness error has been a signi
 
 To address this issue, NTRU+ employs two techniques. First, the polynomial r is deterministically derived through the Fujisaki-Okamoto (FO) transform. Second, the polynomial m is generated through the SOTP encoding procedure. As a result, an adversary no longer has direct control over the values of r and m appearing in honestly generated ciphertexts.
 
-This result builds upon {{DHK21}} and extends the analysis to the CBD sampling used in NTRU+, where all coefficients of r and m are sampled according to the CBD. Consequently, the worst-case correctness error of NTRU+ reduces to the average-case correctness error associated with honestly generated ciphertexts following the CBD. 
+This result builds upon {{DHK21}} and extends the analysis to the CBD sampling used in NTRU+, where all coefficients of r and m are sampled according to the CBD. Consequently, the worst-case correctness error of NTRU+ is almost equal to its average-case correctness error over honestly generated ciphertexts following the CBD. 
 
 As with other lattice-based KEMs, decapsulation failures may potentially leak information about the private key. However, NTRU+ is designed so that the probability of a decapsulation failure for an honestly generated ciphertext is negligible, rendering such failures irrelevant in practice. 
 
