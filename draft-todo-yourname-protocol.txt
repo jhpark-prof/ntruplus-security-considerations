@@ -78,7 +78,7 @@ Table of Contents
      3.4.  Input Entropy of Keying Material
      3.5.  Input Validation Checks in Encapsulation and Decapsulation
      3.6.  Explicit Rejection in Decapsulation
-     3.7.  A possible side-channel attack scenario
+     3.7.  Side-Channel Leakage in Hash Computation
    4.  IANA Considerations
    5.  Informative References
    Acknowledgments
@@ -455,12 +455,12 @@ Table of Contents
    decapsulation, rather than requiring validation through subsequent
    use of the derived key.
 
-3.7.  A possible side-channel attack scenario
+3.7.  Side-Channel Leakage in Hash Computation
 
    During decapsulation, a ciphertext c = hr+m is first processed to
    recover candidate polynomials r and m.  The decapsulation algorithm
    then computes H(r), and the pair (H(r), m) is used as input to the
-   SOTP decoding prodecure.  Implementations SHOULD ensure that the
+   SOTP decoding procedure.  Implementations SHOULD ensure that the
    computation of H(r) does not leak side-channel information about its
    input.  Otherwise, information about the underlying message
    polynomial m may be leaked.  This observation is similar in spirit to
@@ -486,9 +486,18 @@ Table of Contents
    m_i=0, thereby revealing information about the decrypted message.
 
    Implementations SHOULD ensure that the computation of H(r) is
-   performed in a constant time and does not reveal information about
-   its input through timing, power-consumption, cache-access, or other
-   side channels.
+   performed in constant time and does not reveal information about its
+   input through timing, power consumption, cache access, or other side
+   channels.
+
+   One important distinction between the side-channel attack of [UXT21]
+   and the attack described above is that the former may lead to
+   recovery of private-key information, whereas the latter is limited to
+   leakage of information about the decrypted message.  As a result, the
+   latter does not directly threaten the long-term secrecy of the
+   private key.  Nevertheless, both attacks demonstrate the need for
+   side-channel-resistant implementations of the hash computation
+   performed during decapsulation.
 
 4.  IANA Considerations
 
