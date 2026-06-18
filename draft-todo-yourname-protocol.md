@@ -114,6 +114,16 @@ informative:
     date: 2024
     target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
 
+  UXT21:
+    title: "Lattice estimator"
+    author:
+      -
+        ins: TODO
+        name: TODO
+    date: 2024
+    target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
+
+
 
 ...
 
@@ -279,7 +289,13 @@ Therefore, explicit rejection does not generally provide a significant advantage
 
 ## A possible side-channel attack scenario
 
+During decapsulation, a ciphertext c = hr+m is first processed to recover candidate polynomials r and m. The decapsulation algorithm then computes H(r), and the pair (H(r), m) is used as input to the SOTP decoding prodecure. Implementations SHOULD ensure that the computation of H(r) does not leak side-channel information about its input. Otherwise, information about the underlying message polynomial m may be leaked. This observation is similar in spirit to the side-channel attack of {{UXT21}}, which exploits leakage during the hash computation performed as part of KEM decapsulation.
 
+One possible attack proceeds as follows. Let c be a target ciphertext and let c_i denote one of its coefficients. The adversary guesses that the corresponding message coefficient m_i is zero and constructs a modified ciphertext c' by adding 1 to c_i. The modified ciphertext is then submitted to a decapsulation device holding the unknown private key sk, while the adversary observes side-channel information associated with the computation of H(r).
+
+If the adversary can determine that the same polynomial r is hashed during the decapsulation of both c and c', then information about m_i is obtained. In particular, when m_i=0, the modification causes the recovered message polynomial to change from m to m', while the relation c' - m' = c - m continues to hold with high probability. Consequently, (c'-m')h^{-1} = r, and the same polynomial r is supplied to the hash function. Detecting this event through side-channel observations allows the adversary to distinguish whether m_i=0, thereby revealing information about the decrypted message. 
+
+Implementations SHOULD ensure that the computation of H(r) is performed in a constant time and does not reveal information about its input through timing, power-consumption, cache-access, or other side channels. 
 
 
 # IANA Considerations
