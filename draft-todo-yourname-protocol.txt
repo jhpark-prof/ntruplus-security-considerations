@@ -76,7 +76,7 @@ Table of Contents
      3.2.  Rejection Sampling in Key Generation
      3.3.  Pair-wise Consistency Testing Considerations
      3.4.  Input Entropy and Security Margin
-     3.5.  Three ciphertext validation checks in the decapsulation
+     3.5.  Input Validation Checks in Encapsulation and Decapsulation
      3.6.  Explicit rejection in the decapsulation
      3.7.  A possible side-channel attack scenario
    4.  IANA Considerations
@@ -365,7 +365,7 @@ Table of Contents
    accommodate larger amounts of input entropy should future
    cryptographic requirements evolve.
 
-3.5.  Three ciphertext validation checks in the decapsulation
+3.5.  Input Validation Checks in Encapsulation and Decapsulation
 
    one is the modulus check, and the second and the third checks MUST be
    performed in a composed way not to leak the information which error
