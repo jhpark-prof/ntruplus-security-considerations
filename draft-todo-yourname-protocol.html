@@ -1189,7 +1189,7 @@ svg {
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-input-validation-checks-in-" class="internal xref">Input Validation Checks in Encapsulation and Decapsulation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-explicit-rejection-in-the-d" class="internal xref">Explicit rejection in the decapsulation</a></p>
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-explicit-rejection-in-decap" class="internal xref">Explicit Rejection in Decapsulation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
                 <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-a-possible-side-channel-att" class="internal xref">A possible side-channel attack scenario</a></p>
@@ -1363,13 +1363,16 @@ svg {
 <p id="section-3.5-5">In addition, an implementation SHOULD verify that the private key has the expected length and corresponds to the intended parameter set before performing decapsulation. If this validation fails, decapsulation MUST NOT continue. Unlike the ciphertext modulus check described above, this private-key validation is primarily intended to detect malformed inputs and implementation errors rather than to enforce a security property of the NTRU+ construction itself.<a href="#section-3.5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="explicit-rejection-in-the-decapsulation">
+<div id="explicit-rejection-in-decapsulation">
 <section id="section-3.6">
-        <h3 id="name-explicit-rejection-in-the-d">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-explicit-rejection-in-the-d" class="section-name selfRef">Explicit rejection in the decapsulation</a>
+        <h3 id="name-explicit-rejection-in-decap">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-explicit-rejection-in-decap" class="section-name selfRef">Explicit Rejection in Decapsulation</a>
         </h3>
-<p id="section-3.6-1">one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">explicit rejection - during KEM-based authentication protocol like WireGuard, immediate stop or proceed to subsequent process using a prf key in case of implicit rejection<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.6-1">Unlike ML-KEM, which returns a pseudorandom shared secret for an invalid ciphertext, NTRU+ provides explicit rejection and returns a decapsulation error. Protocol designers should understand both the benefits and limitations of this design choice.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-2">In many authenticated key-exchange protocols, explicit rejection is not strictly necessary. Even if a KEM returns a pseudorandom shared secret for an invalid ciphertext, the resulting key material is typically used to derive symmetric keys and MAC keys. Subsequent protocol steps, such as MAC verification, will fail if the two parties derive different shared secrets. As a result, protocols such as TLS, SSH, and IKE can safely operate with either implicit rejection or explicit rejection.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.6-3">However, explicit rejection becomes more useful when a KEM is employed as a public-key encryption scheme. In such settings, the derived shared secret is often used directly to decrypt a protected payload. If implicit rejection is used, the recipient must first determine whether the derived key is valid before attempting decryption. This typically requires an additional integrity check, such as an authenticated-encryption tag or a MAC. By contrast, explicit rejection allows the recipient to terminate processing immediately upon detection of an invalid ciphertext.<a href="#section-3.6-3" class="pilcrow">¶</a></p>
+<p id="section-3.6-4">A similar consideration arises when a KEM is used as an authentication mechanism. In a typical KEM-based authentication protocol, the verifier sends a ciphertext and the prover responds with an additional protocol message, such as a MAC, to demonstrate possession of the correct shared secret. When implicit rejection is used, decapsulation always produces a candidate shared secret, and therefore the verifier must rely on the subsequent protocol message to determine whether decapsulation succeeded correctly. In contrast, with explicit rejection, invalid ciphertexts are detected and rejected during decapsulation itself, allowing the protocol to terminate immediately upon failure. As a result, explicit rejection can simplify the protocol logic.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
+<p id="section-3.6-5">Therefore, explicit rejection does not generally provide a significant advantage in authenticated key-exchange protocols that already include key confirmation or authenticated encryption. Nevertheless, it can simplify protocol design in public-key encryption and KEM-based authentication settings by allowing invalid ciphertexts to be detected directly during decapsulation, without requiring additional subsequent validation of the derived key.<a href="#section-3.6-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="a-possible-side-channel-attack-scenario">
