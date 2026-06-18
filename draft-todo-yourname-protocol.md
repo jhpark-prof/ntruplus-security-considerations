@@ -258,7 +258,7 @@ During encapsulation, an implementation SHOULD perform a public-key type check o
 
 NTRU+ does not require an explicit modulus check on each coefficient of pk during encapsulation. Any modification of the public key results in a mismatch between the value H(pk) stored in the private key and the value derived during decapsulation, causing the decapsulation procedure to reject the resulting ciphertext.
 
-More generally, if an adversary can modify either the public key or a ciphertexct of its choice, a man-in-the-middle (MITM) attack may be possible. To prevent such attacks, protocols using NTRU+ SHOULD provide integrity protection and authentication for the exchanged public keys and ciphertexts, for example through digital signatures, MACs, or authenticated key-exchange mechanisms.    
+More generally, if an adversary can modify either the public key or a ciphertexct of its choice, a man-in-the-middle (MITM) attack may be possible. To prevent such attacks, protocols using NTRU+ SHOULD provide authentication for the exchanged public keys and ciphertexts, for example through a digital signature and a MAC.    
 
 
 one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs. 
