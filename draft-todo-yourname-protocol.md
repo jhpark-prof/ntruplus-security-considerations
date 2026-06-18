@@ -246,7 +246,7 @@ The NTRU+ key-generation procedure described above does not include a Pair-wise 
 We note that NTRU+ may admit a more direct form of Pair-wise Consistency Test (PCT) than the encapsulation-decapsulation test described above. In particular, it may be possible to verify certain mathematical consistency relations between the public key pk=h and the private key sk=(f,h^{-1},H(pk)) by exploiting properties of the SOTP encoding and the CBD-based construction used in NTRU+. Exploring such an approach is beyond the scope of this document. Moreover, incorporating such a PCT would likely require modest modifications to the current key-generation algorithm.
 
 
-## Input Entropy and Security Margin
+## Input Entropy of Keying Material
 
 The encapsulation algorithm takes as input an n-bit random message, from which a 32-byte shared secret is derived. This contrasts with ML-KEM, where the encapsulation process always starts from a fixed 32-byte random value. As a result, NTRU+ naturally supports a larger pool of input entropy.
 
