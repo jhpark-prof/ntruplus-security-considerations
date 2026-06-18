@@ -74,7 +74,7 @@ Table of Contents
    3.  NTRU+ Security Considerations
      3.1.  Correctness and Security properties
      3.2.  Rejection Sampling in Key Generation
-     3.3.  Pair-wise Consistency Testing Considerations
+     3.3.  Pairwise Consistency Testing Considerations
      3.4.  Input Entropy of Keying Material
      3.5.  Input Validation Checks in Encapsulation and Decapsulation
      3.6.  Explicit Rejection in Decapsulation
@@ -94,12 +94,11 @@ Table of Contents
 
    This document provides security considerations for NTRU+, a lattice-
    based KEM derived from the NTRU lattice framework.  NTRU+ [KpqC2025]
-   was selected as a national post-quantum cryptography standard in the
-   Republic of Korea in early 2025, following a two-year public
-   evaluation process that included open cryptanalysis and security
-   review [CHH23] [BCG24].  NTRU+ is designed to achieve IND-CCA2
-   security and supports multiple parameter sets targeting different
-   security levels.
+   was selected as a national post-quantum cryptography standard
+   candidate in early 2025, following a two-year public evaluation
+   process that included open cryptanalysis and security review [CHH23]
+   [BCG24].  NTRU+ is designed to achieve IND-CCA2 security and supports
+   multiple parameter sets targeting different security levels.
 
    NTRU+ can be used in a variety of protocol settings.  As a KEM, it
    can replace or complement ephemeral Diffie-Hellman in authenticated
@@ -140,14 +139,14 @@ Table of Contents
    Key generation employs rejection sampling to ensure that both
    polynomials f=3f'+1 and g are invertible in the ring R.  If a
    generated polynomial f is not invertible, a new 32-byte seed is used
-   to generate a replcement polynomial.  The same procedure is applied
+   to generate a replacement polynomial.  The same procedure is applied
    to g.
 
    The public key consists of the polynomial h represented in NTT form.
    The private key consists of (f, h^{-1}, H(PK)), where both f and
    h^{-1} are stored in NTT form and H(pk) denotes a hash of the public
    key.  After key generation is completed, the random seeds used to
-   geneate f and g SHOULD be securely erased.
+   generate f and g SHOULD be securely erased.
 
    The NTRU+ key-generation algorithm does not include a Pair-wise
    Consistency Test (PCT).  Although a PCT could be incorporated as an
@@ -201,7 +200,7 @@ Table of Contents
    message m' (denoted as m' in Algorithm 13 of [KpqC2025]).  This
    decoding procedure does not immediately signal failure; instead, it
    always produces an n-bit output message at this stage, regardless of
-   whether a decoding error has occured.
+   whether a decoding error has occurred.
 
    The SOTP-recovered message m', together with H(pk), is used to derive
    both a candidate shared secret K and an intermediate randomness ρ'.
@@ -282,8 +281,8 @@ Table of Contents
    This result builds upon [DHK21] and extends the analysis to the CBD
    sampling used in NTRU+, where all coefficients of r and m are sampled
    according to the CBD.  Consequently, the worst-case correctness error
-   of NTRU+ is almost equal to its average-case correctness error over
-   honestly generated ciphertexts following the CBD.
+   of NTRU+ is effectively identical to the average-case correctness
+   error over honestly generated ciphertexts.
 
    As with other lattice-based KEMs, decapsulation failures may
    potentially leak information about the private key.  However, NTRU+
@@ -330,10 +329,10 @@ Table of Contents
    [KCP26], which applies Montgomery's trick to reduce the number of
    field inversions.
 
-3.3.  Pair-wise Consistency Testing Considerations
+3.3.  Pairwise Consistency Testing Considerations
 
    The NTRU+ key-generation procedure described above does not include a
-   Pair-wise Consistency Test (PCT).  Implementations seeking FIPS 140-3
+   Pairwise Consistency Test (PCT).  Implementations seeking FIPS 140-3
    validation MAY perform a PCT following CMVP guidance by executing an
    encapsulation and a subsequent decapsulation using a newly generated
    key pair and verifying that both operations derive the same shared
@@ -377,7 +376,7 @@ Table of Contents
    causing the decapsulation procedure to reject the resulting
    ciphertext.
 
-   During decapsulation, an impementation SHOULD perform both a
+   During decapsulation, an implementation SHOULD perform both a
    ciphertext type check and an explicit modulus check on the received
    ciphertext.  If either validation fails, decapsulation MUST NOT
    continue.  In particular, the explicit modulus check is essential
@@ -393,11 +392,11 @@ Table of Contents
 
    For example, if a ciphertext coefficient is equal to 1, an adversary
    may replace it with 3458.  Both values can be represented as valid
-   12-bit integers and satisfy 3458 = 1 (mod 3457).  As a result, an
+   12-bit integers and satisfy 3458 ≡ 1 (mod 3457).  As a result, an
    adversary can construct a ciphertext that is distinct from a target
    ciphertext at the bit-string level while remaining equivalent modulo
-   q, thereby violating the uniquness of ciphertext encodings assumed by
-   the security proof.
+   q, thereby violating the uniqueness of ciphertext encodings assumed
+   by the security proof.
 
    In addition, an implementation SHOULD verify that the private key has
    the expected length and corresponds to the intended parameter set
@@ -457,10 +456,12 @@ Table of Contents
 
 3.7.  Side-Channel Leakage in Hash Computation
 
-   During decapsulation, a ciphertext c = hr+m is first processed to
-   recover candidate polynomials r and m.  The decapsulation algorithm
-   then computes H(r), and the pair (H(r), m) is used as input to the
-   SOTP decoding procedure.  Implementations SHOULD ensure that the
+   The following discussion is intended to illustrate a potential attack
+   strategy and does not constitute a complete attack analysis.  During
+   decapsulation, a ciphertext c = hr+m is first processed to recover
+   candidate polynomials r and m.  The decapsulation algorithm then
+   computes H(r), and the pair (H(r), m) is used as input to the SOTP
+   decoding procedure.  Implementations SHOULD ensure that the
    computation of H(r) does not leak side-channel information about its
    input.  Otherwise, information about the underlying message
    polynomial m may be leaked.  This observation is similar in spirit to
