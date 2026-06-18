@@ -75,7 +75,7 @@ Table of Contents
      3.1.  Correctness and Security properties
      3.2.  Rejection Sampling in Key Generation
      3.3.  Pair-wise Consistency Testing Considerations
-     3.4.  Input Entropy and Security Margin
+     3.4.  Input Entropy of Keying Material
      3.5.  Input Validation Checks in Encapsulation and Decapsulation
      3.6.  Explicit rejection in the decapsulation
      3.7.  A possible side-channel attack scenario
@@ -352,7 +352,7 @@ Table of Contents
    incorporating such a PCT would likely require modest modifications to
    the current key-generation algorithm.
 
-3.4.  Input Entropy and Security Margin
+3.4.  Input Entropy of Keying Material
 
    The encapsulation algorithm takes as input an n-bit random message,
    from which a 32-byte shared secret is derived.  This contrasts with
