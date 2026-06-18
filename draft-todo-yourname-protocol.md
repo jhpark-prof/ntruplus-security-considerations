@@ -264,13 +264,18 @@ For example, if a ciphertext coefficient is equal to 1, an adversary may replace
 
 In addition, an implementation SHOULD verify that the private key has the expected length and corresponds to the intended parameter set before performing decapsulation. If this validation fails, decapsulation MUST NOT continue. Unlike the ciphertext modulus check described above, this private-key validation is primarily intended to detect malformed inputs and implementation errors rather than to enforce a security property of the NTRU+ construction itself.
 
-## Explicit rejection in the decapsulation
+## Explicit Rejection in Decapsulation
 
+Unlike ML-KEM, which returns a pseudorandom shared secret for an invalid ciphertext, NTRU+ provides explicit rejection and returns a decapsulation error. Protocol designers should understand both the benefits and limitations of this design choice.
 
+In many authenticated key-exchange protocols, explicit rejection is not strictly necessary. Even if a KEM returns a pseudorandom shared secret for an invalid ciphertext, the resulting key material is typically used to derive symmetric keys and MAC keys. Subsequent protocol steps, such as MAC verification, will fail if the two parties derive different shared secrets. As a result, protocols such as TLS, SSH, and IKE can safely operate with either implicit rejection or explicit rejection.
 
-one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs. 
+However, explicit rejection becomes more useful when a KEM is employed as a public-key encryption scheme. In such settings, the derived shared secret is often used directly to decrypt a protected payload. If implicit rejection is used, the recipient must first determine whether the derived key is valid before attempting decryption. This typically requires an additional integrity check, such as an authenticated-encryption tag or a MAC. By contrast, explicit rejection allows the recipient to terminate processing immediately upon detection of an invalid ciphertext.
 
-explicit rejection - during KEM-based authentication protocol like WireGuard, immediate stop or proceed to subsequent process using a prf key in case of implicit rejection 
+A similar consideration arises when a KEM is used as an authentication mechanism. In a typical KEM-based authentication protocol, the verifier sends a ciphertext and the prover responds with an additional protocol message, such as a MAC, to demonstrate possession of the correct shared secret. When implicit rejection is used, decapsulation always produces a candidate shared secret, and therefore the verifier must rely on the subsequent protocol message to determine whether decapsulation succeeded correctly. In contrast, with explicit rejection, invalid ciphertexts are detected and rejected during decapsulation itself, allowing the protocol to terminate immediately upon failure. As a result, explicit rejection can simplify the protocol logic. 
+
+Therefore, explicit rejection does not generally provide a significant advantage in authenticated key-exchange protocols that already include key confirmation or authenticated encryption. Nevertheless, it can simplify protocol design in public-key encryption and KEM-based authentication settings by allowing invalid ciphertexts to be detected directly during decapsulation, without requiring additional subsequent validation of the derived key.
+
 
 ## A possible side-channel attack scenario
 
