@@ -389,7 +389,7 @@ Table of Contents
    12-bit integer.  The gap between the modulus q and the 12-bit
    representation permits multiple encodings of the same element in the
    ring R.  Without an explicit modulus check, this ambiguity can
-   potentially lead to IND-CCA attacks.
+   potentially lead to IND-CCAs attacks.
 
    For example, if a ciphertext coefficient is equal to 1, an adversary
    may replace it with 3458.  Both values can be represented as valid
