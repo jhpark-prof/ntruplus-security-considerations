@@ -380,9 +380,8 @@ Table of Contents
    More generally, if an adversary can modify either the public key or a
    ciphertexct of its choice, a man-in-the-middle (MITM) attack may be
    possible.  To prevent such attacks, protocols using NTRU+ SHOULD
-   provide integrity protection and authentication for the exchanged
-   public keys and ciphertexts, for example through digital signatures,
-   MACs, or authenticated key-exchange mechanisms.
+   provide authentication for the exchanged public keys and ciphertexts,
+   for example through a digital signature and a MAC.
 
    one is the modulus check, and the second and the third checks MUST be
    performed in a composed way not to leak the information which error
