@@ -96,7 +96,7 @@ informative:
     date: 2024
     target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
 
-   DHK21:
+  DHK21:
     title: "Lattice estimator"
     author:
       -
