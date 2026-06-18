@@ -253,6 +253,14 @@ The encapsulation algorithm takes as input an n-bit random message, from which a
 While a 32-byte randomness source is sufficient for currently targeted security levels, the NTRU+ design retains the flexibility to accommodate larger amounts of input entropy should future cryptographic requirements evolve.
 
 ## Input Validation Checks in Encapsulation and Decapsulation
+
+During encapsulation, an implementation SHOULD perform a public-key type check on the public key pk before processing. If this validation fails, encapsulation MUST NOT continue.
+
+NTRU+ does not require an explicit modulus check on each coefficient of pk during encapsulation. Any modification of the public key results in a mismatch between the value H(pk) stored in the private key and the value derived during decapsulation, causing the decapsulation procedure to reject the resulting ciphertext.
+
+More generally, if an adversary can modify either the public key or a ciphertexct of its choice, a man-in-the-middle (MITM) attack may be possible. To prevent such attacks, protocols using NTRU+ SHOULD provide integrity protection and authentication for the exchanged public keys and ciphertexts, for example through digital signatures, MACs, or authenticated key-exchange mechanisms.    
+
+
 one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs. 
 
 ## Explicit rejection in the decapsulation
