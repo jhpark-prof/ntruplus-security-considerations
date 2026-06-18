@@ -258,7 +258,7 @@ During encapsulation, an implementation SHOULD perform a public-key type check o
 
 During decapsulation, an impementation SHOULD perform both a ciphertext type check and an explicit modulus check on the received ciphertext. If either validation fails, decapsulation MUST NOT continue. In particular, the explicit modulus check is essential because the decapsulation procedure of NTRU+ does not perform a re-encryption and ciphertext equality check as part of the FO transform.   
 
-The modulus check is particularly important in NTRU+, where the modulus is q=3457 and each ciphertext coefficient is represented as a 12-bit integer. The gap between the modulus q and the 12-bit representation permits multiple encodings of the same element in the ring R. Without an explicit modulus check, this ambiguity can potentially lead to IND-CCAs attacks.
+The modulus check is particularly important in NTRU+, where the modulus is q=3457 and each ciphertext coefficient is represented as a 12-bit integer. The gap between the modulus q and the 12-bit representation permits multiple encodings of the same element in the ring R. Without an explicit modulus check, this ambiguity can potentially lead to IND-CCA2 attacks.
 
 For example, if a ciphertext coefficient is equal to 1, an adversary may replace it with 3458. Both values can be represented as valid 12-bit integers and satisfy 3458 = 1 (mod 3457). As a result, an adversary can construct a ciphertext that is distinct from a target ciphertext at the bitstring level while remaining equivalent modulo q, thereby violating the uniquness of ciphertext encodings assumed by the security proof.
 
