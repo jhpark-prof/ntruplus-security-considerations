@@ -260,11 +260,9 @@ During decapsulation, an impementation SHOULD perform both a ciphertext type che
 
 The modulus check is particularly important in NTRU+, where the modulus is q=3457 and each ciphertext coefficient is represented as a 12-bit integer. The gap between the modulus q and the 12-bit representation permits multiple encodings of the same element in the ring R. Without an explicit modulus check, this ambiguity can potentially lead to IND-CCA2 attacks.
 
-For example, if a ciphertext coefficient is equal to 1, an adversary may replace it with 3458. Both values can be represented as valid 12-bit integers and satisfy 3458 = 1 (mod 3457). As a result, an adversary can construct a ciphertext that is distinct from a target ciphertext at the bitstring level while remaining equivalent modulo q, thereby violating the uniquness of ciphertext encodings assumed by the security proof.
+For example, if a ciphertext coefficient is equal to 1, an adversary may replace it with 3458. Both values can be represented as valid 12-bit integers and satisfy 3458 = 1 (mod 3457). As a result, an adversary can construct a ciphertext that is distinct from a target ciphertext at the bit-string level while remaining equivalent modulo q, thereby violating the uniquness of ciphertext encodings assumed by the security proof.
 
-During decapsulation, an implementation SHOULD perform a private-key type check. If this validation fails, decapsulation MUST NOT continue. Unlike ML-KEM, NTRU+ does not perform a hash consistency check onthe private key. In ML-KEM, the private key contains both the public key and a stored hash of the public key, allowing the implementation to verify their consistency during decapsulation. In contrast, the NTRU+ private key is defined as sk=(f,h^{-1},H(pk)) and does not contain the public key pk=h explicitly. Consequently, NTRU+ does not provide an analogue of the ML-KEM hash check.
-
-
+In addition, an implementation SHOULD verify that the private key has the expected length and corresponds to the intended parameter set before performing decapsulation. If this validation fails, decapsulation MUST NOT continue. Unlike the ciphertext modulus check described above, this private-key validation is primarily intended to detect malformed inputs and implementation errors rather than to enforce a security property of the NTRU+ construction itself.
 
 ## Explicit rejection in the decapsulation
 
