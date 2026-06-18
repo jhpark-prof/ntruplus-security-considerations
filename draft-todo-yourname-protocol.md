@@ -252,7 +252,7 @@ The encapsulation algorithm takes as input an n-bit random message, from which a
 
 While a 32-byte randomness source is sufficient for currently targeted security levels, the NTRU+ design retains the flexibility to accommodate larger amounts of input entropy should future cryptographic requirements evolve.
 
-## Three ciphertext validation checks in the decapsulation
+## Input Validation Checks in Encapsulation and Decapsulation
 one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs. 
 
 ## Explicit rejection in the decapsulation
