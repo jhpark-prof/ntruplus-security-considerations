@@ -417,17 +417,17 @@ Table of Contents
    In many authenticated key-exchange protocols, explicit rejection is
    not strictly necessary.  Even if a KEM returns a pseudorandom shared
    secret for an invalid ciphertext, the resulting key material is
-   typically used to derive symmetric keys and MAC keys.  Subsequent
-   protocol steps, such as MAC verification, will fail if the two
-   parties derive different shared secrets.  As a result, protocols such
-   as TLS, SSH, and IKE can safely operate with either implicit
-   rejection or explicit rejection.
+   typically used to derive symmetric encryption keys and MAC keys.
+   Subsequent protocol steps, such as MAC verification or key
+   confirmation, will fail if the two parties derive different shared
+   secrets.  As a result, protocols such as TLS, SSH, and IKE can safely
+   operate with either implicit rejection or explicit rejection.
 
    However, explicit rejection becomes more useful when a KEM is
-   employed as a public-key encryption scheme.  In such settings, the
-   derived shared secret is often used directly to decrypt a protected
-   payload.  If implicit rejection is used, the recipient must first
-   determine whether the derived key is valid before attempting
+   employed in a public-key encryption setting.  In such applications,
+   the derived shared secret is often used directly to decrypt a
+   protected payload.  If implicit rejection is used, the recipient must
+   first determine whether the derived key is valid before attempting
    decryption.  This typically requires an additional integrity check,
    such as an authenticated-encryption tag or a MAC.  By contrast,
    explicit rejection allows the recipient to terminate processing
@@ -443,16 +443,17 @@ Table of Contents
    to determine whether decapsulation succeeded correctly.  In contrast,
    with explicit rejection, invalid ciphertexts are detected and
    rejected during decapsulation itself, allowing the protocol to
-   terminate immediately upon failure.  As a result, explicit rejection
-   can simplify the protocol logic.
+   terminate immediately upon failure and simplifying the protocol
+   logic.
 
    Therefore, explicit rejection does not generally provide a
    significant advantage in authenticated key-exchange protocols that
-   already include key confirmation or authenticated encryption.
-   Nevertheless, it can simplify protocol design in public-key
-   encryption and KEM-based authentication settings by allowing invalid
-   ciphertexts to be detected directly during decapsulation, without
-   requiring additional subsequent validation of the derived key.
+   already incorporate key confirmation, authenticated encryption, or
+   equivalent integrity checks.  Nevertheless, it can simplify protocol
+   design in public-key encryption and KEM-based authentication settings
+   by allowing invalid ciphertexts to be detected directly during
+   decapsulation, rather than requiring validation through subsequent
+   use of the derived key.
 
 3.7.  A possible side-channel attack scenario
 
