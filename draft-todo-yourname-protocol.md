@@ -262,13 +262,16 @@ The modulus check is particularly important in NTRU+, where the modulus is q=345
 
 For example, if a ciphertext coefficient is equal to 1, an adversary may replace it with 3458. Both values can be represented as valid 12-bit integers and satisfy 3458 = 1 (mod 3457). As a result, an adversary can construct a ciphertext that is distinct from a target ciphertext at the bitstring level while remaining equivalent modulo q, thereby violating the uniquness of ciphertext encodings assumed by the security proof.
 
+During decapsulation, an implementation SHOULD perform a private-key type check. If this validation fails, decapsulation MUST NOT continue. Unlike ML-KEM, NTRU+ does not perform a hash consistency check onthe private key. In ML-KEM, the private key contains both the public key and a stored hash of the public key, allowing the implementation to verify their consistency during decapsulation. In contrast, the NTRU+ private key is defined as sk=(f,h^{-1},H(pk)) and does not contain the public key pk=h explicitly. Consequently, NTRU+ does not provide an analogue of the ML-KEM hash check.
 
+
+
+## Explicit rejection in the decapsulation
 
 
 
 one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs. 
 
-## Explicit rejection in the decapsulation
 explicit rejection - during KEM-based authentication protocol like WireGuard, immediate stop or proceed to subsequent process using a prf key in case of implicit rejection 
 
 ## A possible side-channel attack scenario
