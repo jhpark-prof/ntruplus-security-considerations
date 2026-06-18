@@ -226,7 +226,7 @@ The IND-CCA2 security of NTRU+ is based on the hardness of the NTRU and Ring-LWE
 The explicit rejection of invalid ciphertexts follows from the 𝛾-spreadness property of GenNTRU, while the re-encryption-free FO transform relies on the rigidity properties of both GenNTRU and SOTP.  
 
 
-## Rejection Sampling in the key generation
+## Rejection Sampling in Key Generation
 
 The key generation process employs rejection sampling. Specifically, fresh 32-byte random seeds SHOULD be obtained from an approved RBG until both polynomials f and g are invertible in the ring R.
 
@@ -239,7 +239,8 @@ The use of rejection sampling implies that the execution time of key generation 
 Polynomial inversion in NTT represendation can be efficiently implemented using the hierarchical batch inversion technique of {{KCP26}}, which applies Montgomery's trick to reduce the number of field inversions.             
 
 
-## A possible PCT process
+## Pair-wise Consistency Testing Considerations
+
 The NTRU+ key-generation procedure described above does not include a Pair-wise Consistency Test (PCT). Implementations seeking FIPS 140-3 validation MAY perform a PCT following CMVP guidance by executing an encapsulation and a subsequent decapsulation using a newly generated key pair and verifying that both operations derive the same shared secret. While such a test can reliably detect non-functional key pairs, it provides only limited assurance against malformed or fault-induced keys that continue to operate correctly on honestly generated ciphertexts.
 
 We note that NTRU+ may admit a more direct form of Pair-wise Consistency Test (PCT) than the encapsulation-decapsulation test described above. In particular, it may be possible to verify certain mathematical consistency relations between the public key pk=h and the private key sk=(f,h^{-1},H(pk)) by exploiting properties of the SOTP encoding and the CBD-based construction used in NTRU+. Exploring such an approach is beyond the scope of this document. Moreover, incorporating such a PCT would likely require modest modifications to the current key-generation algorithm.
@@ -247,6 +248,9 @@ We note that NTRU+ may admit a more direct form of Pair-wise Consistency Test (P
 
 ## The n-bit random strings for generating a 32-byte shared secret
 
+The encapsulation algorithm takes as input an n-bit random message, from which a 32-byte shared secret is derived. This contrasts with ML-KEM, where the encapsulation process always starts from a fixed 32-byte random value. As a result, NTRU+ naturally supports a larger pool of input entropy.
+
+While a 32-byte randomness source is sufficient for currently targeted security levels, the NTRU+ design retains the flexibility to accommodate larger amounts of input entropy should future cryptographic requirements evolve.
 
 ## Three ciphertext validation checks in the decapsulation
 one is the modulus check, and the second and the third checks MUST be performed in a composed way not to leak the information which error occurs. 
