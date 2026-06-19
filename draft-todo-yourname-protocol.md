@@ -159,13 +159,22 @@ informative:
     target: https://eprint.iacr.org/2026/1191
 
   UXT21:
-    title: "Lattice estimator"
+    title: "Curse of Re-encryption: A Generic Power/EM Analysis on Post-Quantum KEMs"
     author:
       -
-        ins: TODO
-        name: TODO
-    date: 2024
-    target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
+        name: Rei Ueno
+      -
+        name: Keita Xagawa
+      -
+        name: Yutaro Tanaka
+      -
+        name: Akira Ito
+      -
+        name: Junko Takahashi
+      -
+        name: Naofumi Homma
+    date: 2021
+    target: https://tches.iacr.org/index.php/TCHES/article/view/9298
 
 
 
