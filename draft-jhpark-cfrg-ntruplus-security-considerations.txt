@@ -602,8 +602,6 @@ Table of Contents
 
 Acknowledgments
 
-   TODO acknowledge.
-
 Authors' Addresses
 
    Jong Hwan Park
