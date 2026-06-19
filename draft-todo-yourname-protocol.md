@@ -52,6 +52,9 @@ author:
     fullname: Jonghyun Kim
     organization: Korea University
     email: yoswuk@korea.ac.kr
+ -
+    fullname: MinKyu Shin
+    organization: ITCEN PNS
 
 normative:
 
