@@ -45,9 +45,13 @@ venue:
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Jong Hwan Park
+    organization: Sangmyung University
+    email: jhpark@smu.ac.kr
+ -
+    fullname: Jonghyun Kim
+    organization: Korea University
+    email: yoswuk@korea.ac.kr
 
 normative:
 
