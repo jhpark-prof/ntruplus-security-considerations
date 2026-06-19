@@ -147,13 +147,16 @@ informative:
     target: https://link.springer.com/chapter/10.1007/978-3-031-31368-4_3
 
   KCP26:
-    title: "Lattice estimator"
+    title: "Accelerating NTRU+ Key Generation via Hierarchical Batch Inversion"
     author:
       -
-        ins: TODO
-        name: TODO
-    date: 2024
-    target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
+        name: Jonghyun Kim
+      -
+        name: Haehyun Cho
+      -
+        name: Jong Hwan Park
+    date: 2026
+    target: https://eprint.iacr.org/2026/1191
 
   UXT21:
     title: "Lattice estimator"
@@ -282,7 +285,7 @@ As shown in Table 2, key generation in NTRU+ remains computationally efficient i
 
 The use of rejection sampling implies that the execution time of key generation is not strictly constant and exhibits some variance. However, this timing variation depends only on the randomness used during key generation and does not affect the security of the generated key pair.
 
-Polynomial inversion in NTT represendation can be efficiently implemented using the hierarchical batch inversion technique of {{KCP26}}, which applies Montgomery's trick to reduce the number of field inversions.             
+Polynomial inversion in NTT representation can be efficiently implemented using the hierarchical batch inversion technique of {{KCP26}}, which applies Montgomery's trick to reduce the number of field inversions.
 
 
 ## Pairwise Consistency Testing Considerations
