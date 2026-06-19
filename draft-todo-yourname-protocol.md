@@ -70,13 +70,44 @@ informative:
     target: https://example.com/TODO-CHH23
 
   BCG24:
-    title: "TODO: Full title of the BCG paper"
+    title: "Report on evaluation of KpqC Round-2 candidates"
     author:
       -
-        ins: TODO
-        name: TODO
+        name: Daniel J. Bernstein
+      -
+        name: Jolijn Cottaar
+      -
+        name: Emanuele Di Giandomenico
+      -
+        name: Kathrin Hövelmanns
+      -
+        name: Andreas Hülsing
+      -
+        name: Mikhail Kudinov
+      -
+        name: Tanja Lange
+      -
+        name: Mairon Mahzoun
+      -
+        name: Matthias Meijers
+      -
+        name: Alex Pellegrini
+      -
+        name: Alberto Ravagnani
+      -
+        name: Silvia Ritsch
+      -
+        name: Sven Schäge
+      -
+        name: Tianxin Tang
+      -
+        name: Monika Trimoska
+      -
+        name: Marc Vorstermans
+      -
+        name: Fiona Johanna Weber
     date: 2024
-    target: https://example.com/TODO-BCG24
+    target: https://eprint.iacr.org/2024/2077
 
   NTTRU:
     title: "NTTRU: Efficient and Secure NTRU-Based KEM"
