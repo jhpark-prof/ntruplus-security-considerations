@@ -293,7 +293,7 @@ Table of Contents
    longer has direct control over the values of r and m appearing in
    honestly generated ciphertexts.
 
-   This result builds upon [DHK21] and extends the analysis to the CBD
+   This result builds upon [DHK22] and extends the analysis to the CBD
    sampling used in NTRU+, where all coefficients of r and m are sampled
    according to the CBD.  Consequently, the worst-case correctness error
    of NTRU+ is effectively identical to the average-case correctness
@@ -532,9 +532,11 @@ Table of Contents
    [CHH23]    TODO, "TODO: Full title of the CHH paper", 2023,
               <https://example.com/TODO-CHH23>.
 
-   [DHK21]    TODO, "Lattice estimator", 2024, <https://github.com/malb/
-              lattice-estimator/
-              tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463>.
+   [DHK22]    Duman, J., Hövelmanns, K., Kiltz, E., Lyubashevsky, V.,
+              Seiler, G., and D. Unruh, "A Thorough Treatment of Highly-
+              Efficient NTRU Instantiations", 2023,
+              <https://link.springer.com/
+              chapter/10.1007/978-3-031-31368-4_3>.
 
    [KCP26]    TODO, "Lattice estimator", 2024, <https://github.com/malb/
               lattice-estimator/
