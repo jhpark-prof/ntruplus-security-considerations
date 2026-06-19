@@ -2,10 +2,11 @@
 
 
 
-WG Working Group                                              Y. N. Here
-Internet-Draft                                    Your Organization Here
-Intended status: Informational                              19 June 2026
-Expires: 21 December 2026
+WG Working Group                                              J. H. Park
+Internet-Draft                                      Sangmyung University
+Intended status: Informational                                    J. Kim
+Expires: 21 December 2026                               Korea University
+                                                            19 June 2026
 
 
                      NTRU+ Security Considerations
@@ -82,7 +83,7 @@ Table of Contents
    4.  IANA Considerations
    5.  Informative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -584,8 +585,13 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
-   Your Name Here
-   Your Organization Here
-   Email: your.email@example.com
+   Jong Hwan Park
+   Sangmyung University
+   Email: jhpark@smu.ac.kr
+
+
+   Jonghyun Kim
+   Korea University
+   Email: yoswuk@korea.ac.kr
