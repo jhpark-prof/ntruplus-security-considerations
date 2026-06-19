@@ -315,7 +315,7 @@ The explicit rejection of invalid ciphertexts follows from the 𝛾-spreadness p
 
 The key generation process employs rejection sampling. Specifically, fresh 32-byte random seeds SHOULD be obtained from an approved RBG until both polynomials f and g are invertible in the ring R.
 
-The probability that a randomly generated small polynomial is invertible in R is at least 0.99 for NTRU+768 and NTRU+864,  and approximately 0.71 for NTRU+1152. Consequently, the probability that both f and g are invertible is approximately 0.99 for NTRU+768 and NTRU+864, and approximately 0.51 in NTRU+1152.
+The probability that a randomly generated small polynomial is invertible in R can be heuristically estimated from the CRT-based ring decomposition. For NTRU+768 and NTRU+864, the decomposition reaches degree-2 and degree-3 factors, respectively, giving approximate per-polynomial invertibility probabilities of (1 - 3457^{-2})^{768/2} ≈ 1.00 and (1 - 3457^{-3})^{864/3} ≈ 1.00. For NTRU+1152, the corresponding probability is approximately 0.71. Consequently, the probability that both f and g are invertible is approximately 1.00 for NTRU+768 and NTRU+864, and approximately 0.51 for NTRU+1152.
 
 As shown in Table 2, key generation in NTRU+ remains computationally efficient in both the optimized C and AVX2 implementations. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of attempts is less than two, and the resulting overhead is negligible in practice.
 
