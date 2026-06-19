@@ -1277,7 +1277,7 @@ encryption, and KEM-based authentication.<a href="#section-abstract-1" class="pi
           <h4 id="name-encapsulation">
 <a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-encapsulation" class="section-name selfRef">Encapsulation</a>
           </h4>
-<p id="section-2.1.2-1">The encapsulation algorithm (see Section 6.3.1 of <span>[<a href="#KP26" class="cite xref">KP26</a>]</span>) requires an n-bit random message as input. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-1">The encapsulation algorithm (see Section 6.3.1 of <span>[<a href="#KP26" class="cite xref">KP26</a>]</span>) internally samples an n-bit random message. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-2">The shared secret K and an intermediate randomness ρ are derived from the random message and F(pk) using the hash function H. The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-3">The ciphertext is computed as c = hr + m, where h is the public key, r is a short polynomial derived from the intermediate randomness ρ, and m is encoded as a polynomial using a semi-generalized one-time pad (SOTP) operation. Both r and m are short polynomials with coefficients sampled according to the CBD. The resulting ciphertext c is represented in NTT form. This representation is preserved during transmission and is used directly as input to the decapsulation algorithm.<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-4">After encapsulation is completed, the n-bit random message SHOULD be securely erased.<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
@@ -1345,7 +1345,7 @@ encryption, and KEM-based authentication.<a href="#section-abstract-1" class="pi
           </tbody>
         </table>
 <p id="section-2.2-3">Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to CPU 5 using taskset and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to a single CPU core and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
           <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
