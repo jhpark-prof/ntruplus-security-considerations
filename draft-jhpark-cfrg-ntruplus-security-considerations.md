@@ -237,7 +237,7 @@ The key generation algorithm (see Section 6.3.1 of {{KP26}}) takes as input two 
 
 Key generation employs rejection sampling to ensure that both polynomials f=3f'+1 and g are invertible in the ring R. If a generated polynomial f is not invertible, a new 32-byte seed is used to generate a replacement polynomial. The same procedure is applied to g.
 
-The public key consists of the polynomial h represented in NTT form. The private key consists of (f, h^{-1}, H(PK)), where both f and h^{-1} are stored in NTT form and H(pk) denotes a hash of the public key. After key generation is completed, the random seeds used to generate f and g SHOULD be securely erased.
+The public key consists of the polynomial h represented in NTT form. The private key consists of (f, h^{-1}, F(pk)), where both f and h^{-1} are stored in NTT form and F(pk) denotes a hash of the public key. After key generation is completed, the random seeds used to generate f and g SHOULD be securely erased.
 
 The NTRU+ key-generation algorithm does not include a Pair-wise Consistency Test (PCT). Although a PCT could be incorporated as an optional self-test by extending the key-generation procedure, it is not part of the current specification. This document therefore considers only the standard key-generation procedure defined in {{KP26}}.
 
@@ -245,7 +245,7 @@ The NTRU+ key-generation algorithm does not include a Pair-wise Consistency Test
 
 The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) requires an n-bit random message as input. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
 
-The shared secret K and an intermediate randomness ρ are derived from the random message and H(pk) using a hash function. The inclusion of H(pk) in this derivation is intended to provide resistance against multi-target attacks.
+The shared secret K and an intermediate randomness ρ are derived from the random message and F(pk) using the hash function H. The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
 The ciphertext is computed as c = hr + m, where h is the public key, r is a short polynomial derived from the intermediate randomness ρ, and m is encoded as a polynomial using a semi-generalized one-time pad (SOTP) operation. Both r and m are short polynomials with coefficients sampled according to the CBD. The resulting ciphertext c is represented in NTT form. This representation is preserved during transmission and is used directly as input to the decapsulation algorithm.
 
@@ -253,19 +253,19 @@ After encapsulation is completed, the n-bit random message SHOULD be securely er
 
 ### Decapsulation
 
-The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a ciphertext c and the private key sk = (f, h^{-1}, H(PK)). The algorithm outputs either a 32-byte shared secret K for a valid ciphertext or a decapsulation error for an invalid ciphertext. Thus, NTRU+ employs explicit rejection for invalid ciphertexts rather than deriving and returning a pseudorandom key.
+The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a ciphertext c and the private key sk = (f, h^{-1}, F(pk)). The algorithm outputs either a 32-byte shared secret K for a valid ciphertext or a decapsulation error for an invalid ciphertext. Thus, NTRU+ employs explicit rejection for invalid ciphertexts rather than deriving and returning a pseudorandom key.
 
 The algorithm SHOULD first verify that the ciphertext c is properly formed. In particular, each coefficient of the ciphertext polynomial MUST be checked to ensure that it lies within the valid range defined by the modulus q. If this validation fails, the algorithm MUST return a decapsulation error.
 
 Otherwise, candidate values of r and m are recovered from the ciphertext c using f and h^{-1}. The recovered values are then processed using the SOTP decoding operation, yielding an n-bit message m' (denoted as m' in Algorithm 13 of {{KP26}}). This decoding procedure does not immediately signal failure; instead, it always produces an n-bit output message at this stage, regardless of whether a decoding error has occurred.
 
-The SOTP-recovered message m', together with H(pk), is used to derive both a candidate shared secret K and an intermediate randomness ρ'. A short polynomial r' is then generated from ρ' according to the CBD.
+The SOTP-recovered message m', together with the stored public-key hash F(pk), is used to derive both a candidate shared secret K and an intermediate randomness ρ'. A short polynomial r' is then generated from ρ' according to the CBD.
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
 To avoid creating an error oracle, implementations SHOULD perform both validation checks unconditionally and combine their results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed.
 
-Upon completion of decapsulation, all intermediate values, including recovered polynomials, messages, randomness values, and candiate shared secrets, SHOULD be securely erased.
+Upon completion of decapsulation, all intermediate values, including recovered polynomials, messages, randomness values, and candidate shared secrets, SHOULD be securely erased.
 
 ## Parameter Sets
 
@@ -328,7 +328,7 @@ Polynomial inversion in NTT representation can be efficiently implemented using 
 
 The NTRU+ key-generation procedure described above does not include a Pairwise Consistency Test (PCT). Implementations seeking FIPS 140-3 validation MAY perform a PCT following CMVP guidance by executing an encapsulation and a subsequent decapsulation using a newly generated key pair and verifying that both operations derive the same shared secret. While such a test can reliably detect non-functional key pairs, it provides only limited assurance against malformed or fault-induced keys that continue to operate correctly on honestly generated ciphertexts.
 
-We note that NTRU+ may admit a more direct form of Pair-wise Consistency Test (PCT) than the encapsulation-decapsulation test described above. In particular, it may be possible to verify certain mathematical consistency relations between the public key pk=h and the private key sk=(f,h^{-1},H(pk)) by exploiting properties of the SOTP encoding and the CBD-based construction used in NTRU+. Exploring such an approach is beyond the scope of this document. Moreover, incorporating such a PCT would likely require modest modifications to the current key-generation algorithm.
+We note that NTRU+ may admit a more direct form of Pair-wise Consistency Test (PCT) than the encapsulation-decapsulation test described above. In particular, it may be possible to verify certain mathematical consistency relations between the public key pk=h and the private key sk=(f,h^{-1},F(pk)) by exploiting properties of the SOTP encoding and the CBD-based construction used in NTRU+. Exploring such an approach is beyond the scope of this document. Moreover, incorporating such a PCT would likely require modest modifications to the current key-generation algorithm.
 
 
 ## Input Entropy of Keying Material
@@ -339,7 +339,7 @@ While a 32-byte randomness source is sufficient for currently targeted security 
 
 ## Input Validation Checks in Encapsulation and Decapsulation
 
-During encapsulation, an implementation SHOULD perform a public-key type check on the public key pk before processing. If this validation fails, encapsulation MUST NOT continue. NTRU+ does not require an explicit modulus check on each coefficient of pk during encapsulation. Any modification of the public key results in a mismatch between the value H(pk) stored in the private key and the hash value derived from the modified public key during encapsulation, causing the decapsulation procedure to reject the resulting ciphertext.
+During encapsulation, an implementation SHOULD perform a public-key type check on the public key pk before processing. If this validation fails, encapsulation MUST NOT continue. NTRU+ does not require an explicit modulus check on each coefficient of pk during encapsulation. Any modification of the public key results in a mismatch between the value F(pk) stored in the private key and the hash value derived from the modified public key during encapsulation, causing the decapsulation procedure to reject the resulting ciphertext.
 
 During decapsulation, an implementation SHOULD perform both a ciphertext type check and an explicit modulus check on the received ciphertext. If either validation fails, decapsulation MUST NOT continue. In particular, the explicit modulus check is essential because the decapsulation procedure of NTRU+ does not perform a re-encryption and ciphertext equality check as part of the FO transform.
 
