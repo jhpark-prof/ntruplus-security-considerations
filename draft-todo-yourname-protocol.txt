@@ -526,8 +526,13 @@ Table of Contents
               lattice-estimator/
               tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463>.
 
-   [BCG24]    TODO, "TODO: Full title of the BCG paper", 2024,
-              <https://example.com/TODO-BCG24>.
+   [BCG24]    Bernstein, D. J., Cottaar, J., Giandomenico, E. D.,
+              Hövelmanns, K., Hülsing, A., Kudinov, M., Lange, T.,
+              Mahzoun, M., Meijers, M., Pellegrini, A., Ravagnani, A.,
+              Ritsch, S., Schäge, S., Tang, T., Trimoska, M.,
+              Vorstermans, M., and F. J. Weber, "Report on evaluation of
+              KpqC Round-2 candidates", 2024,
+              <https://eprint.iacr.org/2024/2077>.
 
    [CHH23]    TODO, "TODO: Full title of the CHH paper", 2023,
               <https://example.com/TODO-CHH23>.
