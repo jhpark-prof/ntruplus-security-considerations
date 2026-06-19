@@ -534,8 +534,11 @@ Table of Contents
               KpqC Round-2 candidates", 2024,
               <https://eprint.iacr.org/2024/2077>.
 
-   [CHH23]    TODO, "TODO: Full title of the CHH paper", 2023,
-              <https://example.com/TODO-CHH23>.
+   [CHH23]    Cottaar, J., Hövelmanns, K., Hülsing, A., Lange, T.,
+              Mahzoun, M., Pellegrini, A., Ravagnani, A., Schäge, S.,
+              Trimoska, M., and B. de. Weger, "Report on evaluation of
+              KpqC candidates", 2023,
+              <https://eprint.iacr.org/2023/1853>.
 
    [DHK22]    Duman, J., Hövelmanns, K., Kiltz, E., Lyubashevsky, V.,
               Seiler, G., and D. Unruh, "A Thorough Treatment of Highly-
