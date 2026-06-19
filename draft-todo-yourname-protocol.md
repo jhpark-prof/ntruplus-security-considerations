@@ -96,14 +96,23 @@ informative:
     date: 2024
     target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
 
-  DHK21:
-    title: "Lattice estimator"
+  DHK22:
+    title: "A Thorough Treatment of Highly-Efficient NTRU Instantiations"
     author:
       -
-        ins: TODO
-        name: TODO
-    date: 2024
-    target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
+        name: Julien Duman
+      -
+        name: Kathrin Hövelmanns
+      -
+        name: Eike Kiltz
+      -
+        name: Vadim Lyubashevsky
+      -
+        name: Gregor Seiler
+      -
+        name: Dominique Unruh
+    date: 2023
+    target: https://link.springer.com/chapter/10.1007/978-3-031-31368-4_3
 
   KCP26:
     title: "Lattice estimator"
@@ -221,7 +230,7 @@ Historically, achieving negligible worst-case correctness error has been a signi
 
 To address this issue, NTRU+ employs two techniques. First, the polynomial r is deterministically derived through the Fujisaki-Okamoto (FO) transform. Second, the polynomial m is generated through the SOTP encoding procedure. As a result, an adversary no longer has direct control over the values of r and m appearing in honestly generated ciphertexts.
 
-This result builds upon {{DHK21}} and extends the analysis to the CBD sampling used in NTRU+, where all coefficients of r and m are sampled according to the CBD. Consequently, the worst-case correctness error of NTRU+ is effectively identical to the average-case correctness error over honestly generated ciphertexts. 
+This result builds upon {{DHK22}} and extends the analysis to the CBD sampling used in NTRU+, where all coefficients of r and m are sampled according to the CBD. Consequently, the worst-case correctness error of NTRU+ is effectively identical to the average-case correctness error over honestly generated ciphertexts.
 
 As with other lattice-based KEMs, decapsulation failures may potentially leak information about the private key. However, NTRU+ is designed so that the probability of a decapsulation failure for an honestly generated ciphertext is negligible, rendering such failures irrelevant in practice. 
 
