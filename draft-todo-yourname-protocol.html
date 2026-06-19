@@ -1050,7 +1050,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Here</td>
-<td class="center">Expires 20 December 2026</td>
+<td class="center">Expires 21 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg {
 <dd class="internet-draft">draft-todo-yourname-protocol-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-18" class="published">18 June 2026</time>
+<time datetime="2026-06-19" class="published">19 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-20">20 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-21">21 December 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1289,17 +1289,23 @@ svg {
 |  NTRU+1152 |  1728  |  3488  |  1728  |   32   |   248    |
 +------------+--------+--------+--------+--------+----------+<a href="#section-2.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.2-3">Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">Table 2 summarizes the performance measurements of the NTRU+ algorithms for each parameter set.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2-5">+============+=============+=============+=============+
-|            |   KeyGen    |    Encap    |    Decap    | <br>
-+============+=============+=============+=============+
-|  NTRU+768  |       1152  |       2336  |       1152  |<br>
-+------------+-------------+-------------+-------------+
-|  NTRU+864  |       1296  |       2624  |       1296  | <br>
-+------------+-------------+-------------+-------------+
-|  NTRU+1152 |       1728  |       3488  |       1728  | <br>
-+------------+-------------+-------------+-------------+<a href="#section-2.2-5" class="pilcrow">¶</a></p>
-<p id="section-2.2-6">Table 2: Single-core performance in operations per second on AMD Ryzen 7 7700<a href="#section-2.2-6" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to CPU 5 using taskset and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-5">+=============+============+=============+=============+=============+
+| Impl.       | Parameter  |   KeyGen    |    Encap    |    Decap    |
++=============+============+=============+=============+=============+
+| Optimized C | NTRU+768   |    41,225   |    53,641   |    47,787   |
++-------------+------------+-------------+-------------+-------------+
+| Optimized C | NTRU+864   |    37,519   |    46,834   |    41,458   |
++-------------+------------+-------------+-------------+-------------+
+| Optimized C | NTRU+1152  |    24,858   |    36,333   |    31,108   |
++-------------+------------+-------------+-------------+-------------+
+| AVX2        | NTRU+768   |   138,191   |   120,052   |   196,101   |
++-------------+------------+-------------+-------------+-------------+
+| AVX2        | NTRU+864   |   125,406   |   102,974   |   154,965   |
++-------------+------------+-------------+-------------+-------------+
+| AVX2        | NTRU+1152  |    84,452   |    81,498   |   123,876   |
++-------------+------------+-------------+-------------+-------------+<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2-6">Table 2: Single-core end-to-end KEM API performance in operations per second. Key generation and encapsulation include randomness generation performed by the implementation.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1329,7 +1335,7 @@ svg {
         </h3>
 <p id="section-3.2-1">The key generation process employs rejection sampling. Specifically, fresh 32-byte random seeds SHOULD be obtained from an approved RBG until both polynomials f and g are invertible in the ring R.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">The probability that a randomly generated small polynomial is invertible in R is at least 0.99 for NTRU+768 and NTRU+864,  and approximately 0.71 for NTRU+1152. Consequently, the probability that both f and g are invertible is approximately 0.99 for NTRU+768 and NTRU+864, and approximately 0.51 in NTRU+1152.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3">As shown in Table 2, key generation in NTRU+ is computationally efficient. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of attempts is less than two, and the resulting overhead is negligible in practice.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">As shown in Table 2, key generation in NTRU+ remains computationally efficient in both the optimized C and AVX2 implementations. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of attempts is less than two, and the resulting overhead is negligible in practice.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.2-4">The use of rejection sampling implies that the execution time of key generation is not strictly constant and exhibits some variance. However, this timing variation depends only on the randomness used during key generation and does not affect the security of the generated key pair.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.2-5">Polynomial inversion in NTT represendation can be efficiently implemented using the hierarchical batch inversion technique of <span>[<a href="#KCP26" class="cite xref">KCP26</a>]</span>, which applies Montgomery's trick to reduce the number of field inversions.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 </section>
