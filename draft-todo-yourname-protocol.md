@@ -40,8 +40,8 @@ venue:
   type: Working Group
   mail: WG@example.com
   arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  github: jhpark-prof/ntruplus-security-considerations
+  latest: https://github.com/jhpark-prof/ntruplus-security-considerations
 
 author:
  -
