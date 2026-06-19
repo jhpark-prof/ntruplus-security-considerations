@@ -3,7 +3,7 @@ title: "NTRU+ Security Considerations"
 abbrev: "NTRU+ Security Considerations"
 category: info
 
-docname: draft-jhpark-cfrg-ntruplus-security-considerations-00
+docname: draft-jhpark-cfrg-ntruplus-security-considerations-latest
 submissiontype: IRTF
 number:
 date:
