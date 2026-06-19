@@ -55,6 +55,7 @@ author:
  -
     fullname: MinKyu Shin
     organization: ITCEN PNS
+    email: mkshin@itcen.com
 
 normative:
 
