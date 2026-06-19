@@ -61,13 +61,30 @@ informative:
     target: https://www.kpqc.or.kr/
 
   CHH23:
-    title: "TODO: Full title of the CHH paper"
+    title: "Report on evaluation of KpqC candidates"
     author:
       -
-        ins: TODO
-        name: TODO
+        name: Jolijn Cottaar
+      -
+        name: Kathrin Hövelmanns
+      -
+        name: Andreas Hülsing
+      -
+        name: Tanja Lange
+      -
+        name: Mohammad Mahzoun
+      -
+        name: Alex Pellegrini
+      -
+        name: Alberto Ravagnani
+      -
+        name: Sven Schäge
+      -
+        name: Monika Trimoska
+      -
+        name: Benne de Weger
     date: 2023
-    target: https://example.com/TODO-CHH23
+    target: https://eprint.iacr.org/2023/1853
 
   BCG24:
     title: "Report on evaluation of KpqC Round-2 candidates"
