@@ -243,7 +243,7 @@ The NTRU+ key-generation algorithm does not include a Pair-wise Consistency Test
 
 ### Encapsulation
 
-The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) requires an n-bit random message as input. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
+The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
 
 The shared secret K and an intermediate randomness ρ are derived from the random message and F(pk) using the hash function H. The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
@@ -279,7 +279,7 @@ NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 
 
 Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
-Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to CPU 5 using taskset and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.
+Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to a single CPU core and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.
 
 | Impl. | Parameter | KeyGen | Encap | Decap |
 |---|---|---:|---:|---:|
