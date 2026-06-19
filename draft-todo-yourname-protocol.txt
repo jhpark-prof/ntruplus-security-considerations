@@ -522,9 +522,9 @@ Table of Contents
 
 5.  Informative References
 
-   [APS15]    TODO, "Lattice estimator", 2024, <https://github.com/malb/
-              lattice-estimator/
-              tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463>.
+   [APS15]    Albrecht, M. R., Player, R., and S. Scott, "On the
+              Concrete Hardness of Learning with Errors", 2015,
+              <https://eprint.iacr.org/2015/046>.
 
    [BCG24]    Bernstein, D. J., Cottaar, J., Giandomenico, E. D.,
               Hövelmanns, K., Hülsing, A., Kudinov, M., Lange, T.,
