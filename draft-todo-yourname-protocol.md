@@ -191,35 +191,24 @@ Upon completion of decapsulation, all intermediate values, including recovered p
 
 NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 summarizes the sizes of the cryptographic material associated with each parameter set, together with the estimated classical security levels obtained using the Lattice Estimator {{APS15}}.
 
-+============+========+========+========+========+==========+
-|            |   pk   |   sk   |   ct   |   ss   | security |
-+============+========+========+========+========+==========+
-|  NTRU+768  |  1152  |  2336  |  1152  |   32   |   156    |
-+------------+--------+--------+--------+--------+----------+
-|  NTRU+864  |  1296  |  2624  |  1296  |   32   |   179    |
-+------------+--------+--------+--------+--------+----------+
-|  NTRU+1152 |  1728  |  3488  |  1728  |   32   |   248    |
-+------------+--------+--------+--------+--------+----------+
+| Parameter | pk | sk | ct | ss | security |
+|---|---:|---:|---:|---:|---:|
+| NTRU+768 | 1152 | 2336 | 1152 | 32 | 156 |
+| NTRU+864 | 1296 | 2624 | 1296 | 32 | 179 |
+| NTRU+1152 | 1728 | 3488 | 1728 | 32 | 248 |
 
 Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
 Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to CPU 5 using taskset and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.
 
-+=============+============+=============+=============+=============+
-| Impl.       | Parameter  |   KeyGen    |    Encap    |    Decap    |
-+=============+============+=============+=============+=============+
-| Optimized C | NTRU+768   |    41,225   |    53,641   |    47,787   |
-+-------------+------------+-------------+-------------+-------------+
-| Optimized C | NTRU+864   |    37,519   |    46,834   |    41,458   |
-+-------------+------------+-------------+-------------+-------------+
-| Optimized C | NTRU+1152  |    24,858   |    36,333   |    31,108   |
-+-------------+------------+-------------+-------------+-------------+
-| AVX2        | NTRU+768   |   138,191   |   120,052   |   196,101   |
-+-------------+------------+-------------+-------------+-------------+
-| AVX2        | NTRU+864   |   125,406   |   102,974   |   154,965   |
-+-------------+------------+-------------+-------------+-------------+
-| AVX2        | NTRU+1152  |    84,452   |    81,498   |   123,876   |
-+-------------+------------+-------------+-------------+-------------+
+| Impl. | Parameter | KeyGen | Encap | Decap |
+|---|---|---:|---:|---:|
+| Optimized C | NTRU+768 | 41,225 | 53,641 | 47,787 |
+| Optimized C | NTRU+864 | 37,519 | 46,834 | 41,458 |
+| Optimized C | NTRU+1152 | 24,858 | 36,333 | 31,108 |
+| AVX2 | NTRU+768 | 138,191 | 120,052 | 196,101 |
+| AVX2 | NTRU+864 | 125,406 | 102,974 | 154,965 |
+| AVX2 | NTRU+1152 | 84,452 | 81,498 | 123,876 |
 
 Table 2: Single-core end-to-end KEM API performance in operations per second. Key generation and encapsulation include randomness generation performed by the implementation.
 
