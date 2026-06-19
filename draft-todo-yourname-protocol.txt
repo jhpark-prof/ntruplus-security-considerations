@@ -571,9 +571,11 @@ Table of Contents
               Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
               February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
 
-   [UXT21]    TODO, "Lattice estimator", 2024, <https://github.com/malb/
-              lattice-estimator/
-              tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463>.
+   [UXT21]    Ueno, R., Xagawa, K., Tanaka, Y., Ito, A., Takahashi, J.,
+              and N. Homma, "Curse of Re-encryption: A Generic Power/EM
+              Analysis on Post-Quantum KEMs", 2021,
+              <https://tches.iacr.org/index.php/TCHES/article/
+              view/9298>.
 
 Acknowledgments
 
