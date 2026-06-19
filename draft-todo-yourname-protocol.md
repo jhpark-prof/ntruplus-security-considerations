@@ -120,13 +120,16 @@ informative:
     target: https://tches.iacr.org/index.php/TCHES/article/view/8293
 
   APS15:
-    title: "Lattice estimator"
+    title: "On the Concrete Hardness of Learning with Errors"
     author:
       -
-        ins: TODO
-        name: TODO
-    date: 2024
-    target: https://github.com/malb/lattice-estimator/tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463
+        name: Martin R. Albrecht
+      -
+        name: Rachel Player
+      -
+        name: Sam Scott
+    date: 2015
+    target: https://eprint.iacr.org/2015/046
 
   DHK22:
     title: "A Thorough Treatment of Highly-Efficient NTRU Instantiations"
