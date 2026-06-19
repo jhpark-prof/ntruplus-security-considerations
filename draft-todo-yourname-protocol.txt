@@ -340,7 +340,7 @@ Table of Contents
    during key generation and does not affect the security of the
    generated key pair.
 
-   Polynomial inversion in NTT represendation can be efficiently
+   Polynomial inversion in NTT representation can be efficiently
    implemented using the hierarchical batch inversion technique of
    [KCP26], which applies Montgomery's trick to reduce the number of
    field inversions.
@@ -543,9 +543,9 @@ Table of Contents
               <https://link.springer.com/
               chapter/10.1007/978-3-031-31368-4_3>.
 
-   [KCP26]    TODO, "Lattice estimator", 2024, <https://github.com/malb/
-              lattice-estimator/
-              tree/352ddaf4a288a0543f5d9eb588d2f89c7acec463>.
+   [KCP26]    Kim, J., Cho, H., and J. H. Park, "Accelerating NTRU+ Key
+              Generation via Hierarchical Batch Inversion", 2026,
+              <https://eprint.iacr.org/2026/1191>.
 
    [KpqC2025] KpqC, "KpqC Competition", 2025, <https://www.kpqc.or.kr/>.
 
