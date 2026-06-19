@@ -3,7 +3,7 @@ title: "NTRU+ Security Considerations"
 abbrev: "NTRU+ Security Considerations"
 category: info
 
-docname: draft-jhpark-cfrg-ntruplus-security-considerations-latest
+docname: draft-jhpark-cfrg-ntruplus-security-considerations-00
 submissiontype: IRTF
 number:
 date:
@@ -190,7 +190,16 @@ informative:
 
 --- abstract
 
-TODO Abstract
+This document describes security considerations for the use of NTRU+ in
+Internet protocols.  NTRU+ is a lattice-based key encapsulation mechanism
+(KEM) based on the NTRU framework and designed to provide IND-CCA2 security.
+The document summarizes the scheme structure and parameter sets, and discusses
+implementation and protocol considerations including key-generation rejection
+sampling, input validation, pairwise consistency testing, explicit rejection
+behavior, randomness requirements, and side-channel leakage during
+decapsulation.  It is intended to help protocol designers and implementers use
+NTRU+ safely in settings such as authenticated key exchange, public-key
+encryption, and KEM-based authentication.
 
 
 --- middle
