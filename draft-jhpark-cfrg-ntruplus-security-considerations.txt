@@ -166,13 +166,6 @@ Table of Contents
    key.  After key generation is completed, the random seeds used to
    generate f and g SHOULD be securely erased.
 
-   The NTRU+ key-generation algorithm does not include a Pairwise
-   Consistency Test (PCT).  Although a PCT could be incorporated as an
-   optional self-test by extending the key-generation procedure, it is
-   not part of the current specification.  This document therefore
-   considers only the standard key-generation procedure defined in
-   [KP26].
-
 2.1.2.  Encapsulation
 
    The encapsulation algorithm (see Section 6.3.1 of [KP26]) internally
@@ -214,25 +207,25 @@ Table of Contents
    by the modulus q.  If this validation fails, the algorithm MUST
    return a decapsulation error.
 
-   Otherwise, a candidate encoded message polynomial M is first
+   Otherwise, a candidate encoded message polynomial M' is first
    recovered from c by using f and reducing the result modulo 3.  A
-   candidate randomness polynomial r is then recovered as r = (c -
-   M)h^{-1}. Using simplified notation, the SOTP decoding operation
-   computes m' := Decode(M, G(r)), yielding either an n-bit message m'
+   candidate randomness polynomial r' is then recovered as r' = (c -
+   M')h^{-1}. Using simplified notation, the SOTP decoding operation
+   computes m' := Decode(M', G(r')), yielding either an n-bit message m'
    or a decoding failure ⊥.
 
    When an n-bit candidate message m' is obtained, it is used together
    with the stored public-key hash F(pk) to derive both a candidate
    shared secret K and an intermediate randomness ρ' as (K, ρ') := H(m',
-   F(pk)).  A regenerated polynomial r' is then computed as r' :=
+   F(pk)).  A regenerated polynomial r'' is then computed as r'' :=
    CBD(ρ').
 
    Subsequently, two validation checks are performed.  The first
    verifies that the SOTP decoding completed without error.  The second
-   verifies that the recovered randomness polynomial r matches the
-   regenerated polynomial r'.  Only if both checks succeed is the shared
-   secret K accepted; otherwise, the decapsulation algorithm returns a
-   decapsulation error.
+   verifies that the recovered randomness polynomial r' matches the
+   regenerated polynomial r''.  Only if both checks succeed is the
+   shared secret K accepted; otherwise, the decapsulation algorithm
+   returns a decapsulation error.
 
    To avoid creating an error oracle, implementations SHOULD perform
    both validation checks in constant time, avoid data-dependent
@@ -342,9 +335,8 @@ Table of Contents
 
 3.2.  Rejection Sampling in Key Generation
 
-   The key generation process employs rejection sampling.  Specifically,
-   fresh 32-byte random seeds SHOULD be obtained from an approved RBG
-   until both polynomials f and g are invertible in the ring R.
+   As described in Section 2.1, key generation repeats the sampling of f
+   and g until both polynomials are invertible in the ring R.
 
    The probability that a randomly generated small polynomial is
    invertible in R can be heuristically estimated from the CRT-based
@@ -501,17 +493,13 @@ Table of Contents
 3.7.  Side-Channel Leakage in Hash Computation
 
    The following discussion is intended to illustrate a potential attack
-   strategy and does not constitute a complete attack analysis.  During
-   decapsulation, a ciphertext c = hr + M is first processed to recover
-   candidate polynomials r and M.  The decapsulation algorithm then
-   computes G(r) using a hash function G, and the pair (G(r), M) is used
-   as input to the SOTP decoding procedure.  Implementations SHOULD
-   ensure that the computation of G(r) does not leak side-channel
-   information about its input.  Otherwise, information about the
-   underlying encoded message polynomial M may be leaked.  This
-   observation is similar in spirit to the side-channel attack of
-   [UXT21], which exploits leakage during the hash computation performed
-   as part of KEM decapsulation.
+   strategy and does not constitute a complete attack analysis.  For a
+   target ciphertext c = hr + M, let r and M denote the randomness
+   polynomial and encoded message polynomial recovered during
+   decapsulation.  Leakage from the computation of G(r) may reveal
+   information about M.  This observation is similar in spirit to the
+   side-channel attack of [UXT21], which exploits leakage during the
+   hash computation performed as part of KEM decapsulation.
 
    One possible attack proceeds as follows.  Let c be a target
    ciphertext and let c_i denote one of its coefficients.  The adversary
