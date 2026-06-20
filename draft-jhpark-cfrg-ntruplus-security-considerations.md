@@ -260,11 +260,11 @@ The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a cip
 
 The algorithm SHOULD first verify that the ciphertext c is properly formed. In particular, each coefficient of the ciphertext polynomial MUST be checked to ensure that it lies within the valid range defined by the modulus q. If this validation fails, the algorithm MUST return a decapsulation error.
 
-Otherwise, candidate values of r and M are recovered from the ciphertext c using f and h^{-1}. The recovered encoded message polynomial M is then processed using the SOTP decoding operation, yielding either an n-bit message m' or a decoding failure ⊥.
+Otherwise, a candidate encoded message polynomial M is first recovered from c using f. A candidate randomness polynomial r is then recovered from c and M using h^{-1}. Using simplified notation, the SOTP decoding operation computes m' := Decode(M, G(r)), yielding either an n-bit message m' or a decoding failure ⊥.
 
-The SOTP decoding result, together with the stored public-key hash F(pk), is used to derive both a candidate shared secret K and an intermediate randomness ρ'. A short polynomial r' is then generated from ρ' according to the CBD.
+The candidate value m', together with the stored public-key hash F(pk), is used to derive both a candidate shared secret K and an intermediate randomness ρ' as (K, ρ') := H(m', F(pk)). A regenerated polynomial r' is then computed as r' := CBD(ρ').
 
-Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
+Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
 To avoid creating an error oracle, implementations SHOULD perform both validation checks unconditionally and combine their results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed.
 
