@@ -41,7 +41,7 @@ About This Document
    Discussion of this document takes place on the Crypto Forum Research
    Group mailing list (mailto:cfrg@ietf.org), which is archived at
    https://mailarchive.ietf.org/arch/browse/cfrg.  Subscribe at
-   https://www.ietf.org/mailman/listinfo/cfrg/.
+   https://mailman.irtf.org/mailman/listinfo/cfrg.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/jhpark-prof/ntruplus-security-considerations.
