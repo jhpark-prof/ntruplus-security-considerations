@@ -141,6 +141,9 @@ Table of Contents
    subtracting one uniformly random bit from another, resulting in
    values in {-1, 0, 1}.
 
+   NTRU+ uses three hash functions, denoted by F, G, and H, which are
+   instantiated with SHAKE-256 in [KP26].
+
 2.1.1.  Key Generation
 
    The key generation algorithm (see Section 6.3.1 of [KP26]) internally
