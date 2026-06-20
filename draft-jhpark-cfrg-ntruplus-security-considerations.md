@@ -234,7 +234,7 @@ Following Lyubashevsky and Seiler {{LS19}}, NTRU+ operates over the polynomial r
 
 NTRU+ uses three hash functions, denoted by F, G, and H, which are instantiated with SHAKE-256 in {{KP26}}.
 
-Throughout this document, equations are written in simplified polynomial notation; public keys and ciphertexts are byte strings that encode NTT-domain polynomial representations, and {{KP26}} specifies the corresponding operations and byte encodings.
+Throughout this document, equations are written in simplified polynomial notation. The corresponding NTT-domain computations and byte encodings are specified in {{KP26}}.
 
 ### Key Generation
 
