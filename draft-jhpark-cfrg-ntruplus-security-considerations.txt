@@ -5,10 +5,10 @@
 Crypto Forum                                                  J. H. Park
 Internet-Draft                                      Sangmyung University
 Intended status: Informational                                    J. Kim
-Expires: 21 December 2026                               Korea University
+Expires: 22 December 2026                               Korea University
                                                                  M. Shin
                                                                ITCEN PNS
-                                                            19 June 2026
+                                                            20 June 2026
 
 
                      NTRU+ Security Considerations
@@ -61,7 +61,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 December 2026.
+   This Internet-Draft will expire on 22 December 2026.
 
 Copyright Notice
 
@@ -495,13 +495,14 @@ Table of Contents
    strategy and does not constitute a complete attack analysis.  During
    decapsulation, a ciphertext c = hr+m is first processed to recover
    candidate polynomials r and m.  The decapsulation algorithm then
-   computes H(r), and the pair (H(r), m) is used as input to the SOTP
-   decoding procedure.  Implementations SHOULD ensure that the
-   computation of H(r) does not leak side-channel information about its
-   input.  Otherwise, information about the underlying message
-   polynomial m may be leaked.  This observation is similar in spirit to
-   the side-channel attack of [UXT21], which exploits leakage during the
-   hash computation performed as part of KEM decapsulation.
+   computes G(r) using a hash function G, and the pair (G(r), m) is used
+   as input to the SOTP decoding procedure.  Implementations SHOULD
+   ensure that the computation of G(r) does not leak side-channel
+   information about its input.  Otherwise, information about the
+   underlying message polynomial m may be leaked.  This observation is
+   similar in spirit to the side-channel attack of [UXT21], which
+   exploits leakage during the hash computation performed as part of KEM
+   decapsulation.
 
    One possible attack proceeds as follows.  Let c be a target
    ciphertext and let c_i denote one of its coefficients.  The adversary
@@ -509,7 +510,7 @@ Table of Contents
    constructs a modified ciphertext c' by adding 1 to c_i.  The modified
    ciphertext is then submitted to a decapsulation device holding the
    unknown private key sk, while the adversary observes side-channel
-   information associated with the computation of H(r).
+   information associated with the computation of G(r).
 
    If the adversary can determine that the same polynomial r is hashed
    during the decapsulation of both c and c', then information about m_i
@@ -521,7 +522,7 @@ Table of Contents
    channel observations allows the adversary to distinguish whether
    m_i=0, thereby revealing information about the decrypted message.
 
-   Implementations SHOULD ensure that the computation of H(r) is
+   Implementations SHOULD ensure that the computation of G(r) is
    performed in constant time and does not reveal information about its
    input through timing, power consumption, cache access, or other side
    channels.
