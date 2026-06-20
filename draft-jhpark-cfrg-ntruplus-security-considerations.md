@@ -242,8 +242,6 @@ Key generation employs rejection sampling to ensure that both polynomials f = 3f
 
 The public key consists of the polynomial h represented in NTT form. The private key consists of (f, h^{-1}, F(pk)), where both f and h^{-1} are stored in NTT form and F(pk) denotes a hash of the public key. After key generation is completed, the random seeds used to generate f and g SHOULD be securely erased.
 
-The NTRU+ key-generation algorithm does not include a Pairwise Consistency Test (PCT). Although a PCT could be incorporated as an optional self-test by extending the key-generation procedure, it is not part of the current specification. This document therefore considers only the standard key-generation procedure defined in {{KP26}}.
-
 ### Encapsulation
 
 The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message m. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
@@ -260,11 +258,11 @@ The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a cip
 
 The algorithm SHOULD first verify that the ciphertext c is properly formed. In particular, each coefficient of the ciphertext polynomial MUST be checked to ensure that it lies within the valid range defined by the modulus q. If this validation fails, the algorithm MUST return a decapsulation error.
 
-Otherwise, a candidate encoded message polynomial M is first recovered from c by using f and reducing the result modulo 3. A candidate randomness polynomial r is then recovered as r = (c - M)h^{-1}. Using simplified notation, the SOTP decoding operation computes m' := Decode(M, G(r)), yielding either an n-bit message m' or a decoding failure ⊥.
+Otherwise, a candidate encoded message polynomial M' is first recovered from c by using f and reducing the result modulo 3. A candidate randomness polynomial r' is then recovered as r' = (c - M')h^{-1}. Using simplified notation, the SOTP decoding operation computes m' := Decode(M', G(r')), yielding either an n-bit message m' or a decoding failure ⊥.
 
-When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness ρ' as (K, ρ') := H(m', F(pk)). A regenerated polynomial r' is then computed as r' := CBD(ρ').
+When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness ρ' as (K, ρ') := H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' := CBD(ρ').
 
-Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
+Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r' matches the regenerated polynomial r''. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
 To avoid creating an error oracle, implementations SHOULD perform both validation checks in constant time, avoid data-dependent branches on intermediate validation results, and combine the results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed.
 
@@ -318,7 +316,7 @@ The explicit rejection of invalid ciphertexts follows from the 𝛾-spreadness p
 
 ## Rejection Sampling in Key Generation
 
-The key generation process employs rejection sampling. Specifically, fresh 32-byte random seeds SHOULD be obtained from an approved RBG until both polynomials f and g are invertible in the ring R.
+As described in Section 2.1, key generation repeats the sampling of f and g until both polynomials are invertible in the ring R.
 
 The probability that a randomly generated small polynomial is invertible in R can be heuristically estimated from the CRT-based ring decomposition. For NTRU+768 and NTRU+864, the decomposition reaches degree-2 and degree-3 factors, respectively, giving approximate per-polynomial invertibility probabilities of (1 - 3457^{-2})^{768/2} ≈ 1.00 and (1 - 3457^{-3})^{864/3} ≈ 1.00. For NTRU+1152, the corresponding probability is approximately 0.71. Consequently, the probability that both f and g are invertible is approximately 1.00 for NTRU+768 and NTRU+864, and approximately 0.51 for NTRU+1152.
 
@@ -369,7 +367,7 @@ Therefore, explicit rejection does not generally provide a significant advantage
 
 ## Side-Channel Leakage in Hash Computation
 
-The following discussion is intended to illustrate a potential attack strategy and does not constitute a complete attack analysis. During decapsulation, a ciphertext c = hr + M is first processed to recover candidate polynomials r and M. The decapsulation algorithm then computes G(r) using a hash function G, and the pair (G(r), M) is used as input to the SOTP decoding procedure. Implementations SHOULD ensure that the computation of G(r) does not leak side-channel information about its input. Otherwise, information about the underlying encoded message polynomial M may be leaked. This observation is similar in spirit to the side-channel attack of {{UXT21}}, which exploits leakage during the hash computation performed as part of KEM decapsulation.
+The following discussion is intended to illustrate a potential attack strategy and does not constitute a complete attack analysis. For a target ciphertext c = hr + M, let r and M denote the randomness polynomial and encoded message polynomial recovered during decapsulation. Leakage from the computation of G(r) may reveal information about M. This observation is similar in spirit to the side-channel attack of {{UXT21}}, which exploits leakage during the hash computation performed as part of KEM decapsulation.
 
 
 One possible attack proceeds as follows. Let c be a target ciphertext and let c_i denote one of its coefficients. The adversary guesses that the corresponding encoded-message coefficient M_i is zero and constructs a modified ciphertext c' by adding 1 to c_i. The modified ciphertext is then submitted to a decapsulation device holding the unknown private key sk, while the adversary observes side-channel information associated with the computation of G(r).
