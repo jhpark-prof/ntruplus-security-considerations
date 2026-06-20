@@ -322,7 +322,7 @@ As described in Section 2.1, key generation repeats the sampling of f and g unti
 
 The probability that a randomly generated small polynomial is invertible in R_q can be heuristically estimated from the full factorization of R_q over F_q. For NTRU+768, NTRU+864, and NTRU+1152, the relevant factor degrees are 2, 3, and 1, respectively, giving approximate per-polynomial invertibility probabilities of (1 - 3457^{-2})^{768/2} ≈ 1.00, (1 - 3457^{-3})^{864/3} ≈ 1.00, and (1 - 3457^{-1})^{1152} ≈ 0.72. Consequently, the probability that both f and g are invertible is approximately 1.00 for NTRU+768 and NTRU+864, and approximately 0.51 for NTRU+1152.
 
-As shown in Table 2, key generation in NTRU+ remains computationally efficient in both the optimized C and AVX2 implementations. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of samples for each of f and g remains below 1.5, and the resulting overhead is modest in the measured implementations.
+As shown in Table 2, key generation in NTRU+ remains computationally efficient in both the optimized C and AVX2 implementations. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of samples for each of f and g remains below 1.5, and the resulting overhead remains small in the measured implementations.
 
 The use of rejection sampling implies that the execution time of key generation is not strictly constant and exhibits some variance. However, this timing variation depends only on the randomness used during key generation and does not affect the security of the generated key pair.
 
