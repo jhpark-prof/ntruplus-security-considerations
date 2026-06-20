@@ -159,8 +159,8 @@ Table of Contents
    according to the CBD.
 
    Key generation employs rejection sampling to ensure that both
-   polynomials f = 3f' + 1 and g = 3g' are invertible in the ring R.  If
-   a generated polynomial f is not invertible, a new 32-byte seed is
+   polynomials f = 3f' + 1 and g = 3g' are invertible in the ring R_q.
+   If a generated polynomial f is not invertible, a new 32-byte seed is
    used to generate a replacement polynomial.  The same procedure is
    applied to g.
 
@@ -208,8 +208,8 @@ Table of Contents
    return a decapsulation error.
 
    Otherwise, a candidate encoded message polynomial M' is first
-   recovered as M' = (cf mod q) mod 3.  A candidate randomness
-   polynomial r' is then recovered as r' = (c - M')h^{-1}. The SOTP
+   recovered as M' = (c f mod q) mod 3.  A candidate randomness
+   polynomial r' is then recovered as r' = (c - M') h^{-1}. The SOTP
    decoding operation computes m' := Decode(M', G(r')), where m' is
    either an n-bit message or the failure symbol ⊥.
 
@@ -335,10 +335,10 @@ Table of Contents
 3.2.  Rejection Sampling in Key Generation
 
    As described in Section 2.1, key generation repeats the sampling of f
-   and g until both polynomials are invertible in the ring R.
+   and g until both polynomials are invertible in the ring R_q.
 
    The probability that a randomly generated small polynomial is
-   invertible in R can be heuristically estimated from the CRT-based
+   invertible in R_q can be heuristically estimated from the CRT-based
    ring decomposition.  For NTRU+768 and NTRU+864, the decomposition
    reaches degree-2 and degree-3 factors, respectively, giving
    approximate per-polynomial invertibility probabilities of (1 -
@@ -423,7 +423,7 @@ Table of Contents
    modulus is q = 3457 and each ciphertext coefficient is represented as
    a 12-bit integer.  The gap between the modulus q and the 12-bit
    representation permits multiple encodings of the same element in the
-   ring R.  Without an explicit modulus check, this ambiguity can
+   ring R_q.  Without an explicit modulus check, this ambiguity can
    potentially lead to IND-CCA2 attacks.
 
    For example, if a ciphertext coefficient is equal to 1, an adversary
@@ -513,7 +513,7 @@ Table of Contents
    is obtained.  In particular, when M_i=0, the modification causes the
    recovered encoded message polynomial to change from M to M', while
    the relation c' - M' = c - M continues to hold with high probability.
-   Consequently, (c'-M')h^{-1} = r, and the same polynomial r is
+   Consequently, (c' - M') h^{-1} = r, and the same polynomial r is
    supplied to the hash function.  Detecting this event through side-
    channel observations allows the adversary to distinguish whether
    M_i=0, thereby revealing information about the decrypted message.
