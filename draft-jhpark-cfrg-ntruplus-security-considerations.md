@@ -234,7 +234,7 @@ Following Lyubashevsky and Seiler {{LS19}}, NTRU+ operates over the polynomial r
 
 NTRU+ uses three hash functions, denoted by F, G, and H, which are instantiated with SHAKE-256 in {{KP26}}.
 
-Throughout this document, equations are written in simplified polynomial notation; {{KP26}} specifies the corresponding NTT-domain operations and byte encodings.
+Throughout this document, equations are written in simplified polynomial notation; public keys and ciphertexts are byte strings that encode NTT-domain polynomial representations, and {{KP26}} specifies the corresponding operations and byte encodings.
 
 ### Key Generation
 
@@ -250,7 +250,7 @@ The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples a
 
 The shared secret K and an intermediate randomness ρ are derived as (K, ρ) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
-A short polynomial r is generated from ρ by the CBD sampling procedure, written as r := CBD(ρ). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is computed in NTT form and serialized for transmission by encoding its coefficients as 12-bit values. During decapsulation, the serialized ciphertext is decoded back into its NTT-domain representation and used directly as input to the decapsulation algorithm.
+A short polynomial r is generated from ρ by the CBD sampling procedure, written as r := CBD(ρ). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form and serialized for transmission as specified in {{KP26}}.
 
 After encapsulation is completed, the n-bit random message SHOULD be securely erased.
 
