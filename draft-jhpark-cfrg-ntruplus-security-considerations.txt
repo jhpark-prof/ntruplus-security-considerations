@@ -232,7 +232,8 @@ Table of Contents
    decapsulation error.
 
    To avoid creating an error oracle, implementations SHOULD perform
-   both validation checks unconditionally and combine their results
+   both validation checks in constant time, avoid data-dependent
+   branches on intermediate validation results, and combine the results
    before making a single acceptance or rejection decision.
    Implementations SHOULD NOT reveal which validation check failed.
 
