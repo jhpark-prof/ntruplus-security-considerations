@@ -183,16 +183,17 @@ Table of Contents
    (K, ρ) := H(m, F(pk)).  The inclusion of F(pk) in this derivation is
    intended to provide resistance against multi-target attacks.
 
-   Using simplified notation, a short polynomial r is generated as r :=
-   CBD(ρ), and the encoded message polynomial is computed as M :=
-   Encode(m, G(r)) using the semi-generalized one-time pad (SOTP)
-   operation.  The ciphertext is then computed as c = hr + M.  Both r
-   and M are short polynomials with coefficients sampled according to
-   the CBD.  The resulting ciphertext polynomial is computed in NTT form
-   and serialized for transmission by encoding its coefficients as
-   12-bit values.  During decapsulation, the serialized ciphertext is
-   decoded back into its NTT-domain representation and used directly as
-   input to the decapsulation algorithm.
+   Using simplified notation, a short polynomial r is generated from ρ
+   by the CBD sampling procedure, written as r := CBD(ρ).  The encoded
+   message polynomial is computed as M := Encode(m, G(r)) using the
+   semi-generalized one-time pad (SOTP) operation, which is designed so
+   that the coefficients of M follow the same CBD distribution.  The
+   ciphertext is then computed as c = hr + M.  The resulting ciphertext
+   polynomial is computed in NTT form and serialized for transmission by
+   encoding its coefficients as 12-bit values.  During decapsulation,
+   the serialized ciphertext is decoded back into its NTT-domain
+   representation and used directly as input to the decapsulation
+   algorithm.
 
    After encapsulation is completed, the n-bit random message SHOULD be
    securely erased.
