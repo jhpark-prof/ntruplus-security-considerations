@@ -145,6 +145,10 @@ Table of Contents
    NTRU+ uses three hash functions, denoted by F, G, and H, which are
    instantiated with SHAKE-256 in [KP26].
 
+   Throughout this document, equations are written in simplified
+   polynomial notation; [KP26] specifies the corresponding NTT-domain
+   operations and byte encodings.
+
 2.1.1.  Key Generation
 
    The key generation algorithm (see Section 6.3.1 of [KP26]) internally
@@ -177,17 +181,16 @@ Table of Contents
    (K, ρ) := H(m, F(pk)).  The inclusion of F(pk) in this derivation is
    intended to provide resistance against multi-target attacks.
 
-   Using simplified notation, a short polynomial r is generated from ρ
-   by the CBD sampling procedure, written as r := CBD(ρ).  The encoded
-   message polynomial is computed as M := Encode(m, G(r)) using the
-   semi-generalized one-time pad (SOTP) operation, which is designed so
-   that the coefficients of M follow the same CBD distribution.  The
-   ciphertext is then computed as c = hr + M.  The resulting ciphertext
-   polynomial is computed in NTT form and serialized for transmission by
-   encoding its coefficients as 12-bit values.  During decapsulation,
-   the serialized ciphertext is decoded back into its NTT-domain
-   representation and used directly as input to the decapsulation
-   algorithm.
+   A short polynomial r is generated from ρ by the CBD sampling
+   procedure, written as r := CBD(ρ).  The encoded message polynomial is
+   computed as M := Encode(m, G(r)) using the semi-generalized one-time
+   pad (SOTP) operation, which is designed so that the coefficients of M
+   follow the same CBD distribution.  The ciphertext is then computed as
+   c = hr + M.  The resulting ciphertext polynomial is computed in NTT
+   form and serialized for transmission by encoding its coefficients as
+   12-bit values.  During decapsulation, the serialized ciphertext is
+   decoded back into its NTT-domain representation and used directly as
+   input to the decapsulation algorithm.
 
    After encapsulation is completed, the n-bit random message SHOULD be
    securely erased.
@@ -208,11 +211,10 @@ Table of Contents
    return a decapsulation error.
 
    Otherwise, a candidate encoded message polynomial M' is first
-   recovered from c by using f and reducing the result modulo 3.  A
-   candidate randomness polynomial r' is then recovered as r' = (c -
-   M')h^{-1}. Using simplified notation, the SOTP decoding operation
-   computes m' := Decode(M', G(r')), yielding either an n-bit message m'
-   or a decoding failure ⊥.
+   recovered as M' = (cf mod q) mod 3.  A candidate randomness
+   polynomial r' is then recovered as r' = (c - M')h^{-1}. The SOTP
+   decoding operation computes m' := Decode(M', G(r')), where m' is
+   either an n-bit message or the failure symbol ⊥.
 
    When an n-bit candidate message m' is obtained, it is used together
    with the stored public-key hash F(pk) to derive both a candidate
