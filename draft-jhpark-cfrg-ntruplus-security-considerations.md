@@ -277,8 +277,9 @@ NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 
 | NTRU+768 | 1152 | 2336 | 1152 | 32 | 156 |
 | NTRU+864 | 1296 | 2624 | 1296 | 32 | 179 |
 | NTRU+1152 | 1728 | 3488 | 1728 | 32 | 248 |
+{: title="Parameter-set sizes and estimated classical security levels"}
 
-Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
+In Table 1, pk = public key, sk = private key, ct = ciphertext, and ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
 Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to a single CPU core and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.
 
@@ -290,8 +291,9 @@ Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ 
 | AVX2 | NTRU+768 | 138,191 | 120,052 | 196,101 |
 | AVX2 | NTRU+864 | 125,406 | 102,974 | 154,965 |
 | AVX2 | NTRU+1152 | 84,452 | 81,498 | 123,876 |
+{: title="Single-core end-to-end KEM API performance"}
 
-Table 2: Single-core end-to-end KEM API performance in operations per second. Key generation and encapsulation include randomness generation performed by the implementation.
+Key generation and encapsulation include randomness generation performed by the implementation.
 
 
 # NTRU+ Security Considerations
