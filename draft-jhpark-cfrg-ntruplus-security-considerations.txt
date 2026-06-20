@@ -187,7 +187,7 @@ Table of Contents
    pad (SOTP) operation, which is designed so that the coefficients of M
    follow the same CBD distribution.  The ciphertext is then computed as
    c = hr + M.  The resulting ciphertext polynomial is represented in
-   NTT form and serialized for transmission as specified in [KP26].
+   NTT form.
 
    After encapsulation is completed, the n-bit random message SHOULD be
    securely erased.
