@@ -294,6 +294,11 @@ Table of Contents
 
 3.1.  Correctness and Security Properties
 
+   As with other lattice-based KEMs, observable decapsulation failures
+   may potentially leak information about the private key.  Therefore,
+   correctness failures are relevant not only to reliability but also to
+   security.
+
    Historically, achieving negligible worst-case correctness error has
    been a significant challenge in NTRU-based public-key encryption
    schemes.  In classical NTRU encryption, an adversary may construct
@@ -314,13 +319,9 @@ Table of Contents
    procedure and the SOTP encoding makes the coefficients of M follow
    the same CBD distribution.  Consequently, the worst-case correctness
    error of NTRU+ does not substantially differ from the average-case
-   correctness error over honestly generated ciphertexts.
-
-   As with other lattice-based KEMs, decapsulation failures may
-   potentially leak information about the private key.  However, NTRU+
-   is designed so that the probability of a decapsulation failure for an
-   honestly generated ciphertext is negligible, rendering such failures
-   irrelevant in practice.
+   correctness error over honestly generated ciphertexts.  NTRU+ is
+   designed so that this failure probability is negligible for honestly
+   generated ciphertexts.
 
    The IND-CCA2 security of NTRU+ is based on the hardness of the NTRU
    and Ring-LWE problems and, in particular, admits a tight security
