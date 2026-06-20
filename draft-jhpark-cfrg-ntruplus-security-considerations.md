@@ -250,7 +250,7 @@ The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples a
 
 The shared secret K and an intermediate randomness ρ are derived as (K, ρ) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
-A short polynomial r is generated from ρ by the CBD sampling procedure, written as r := CBD(ρ). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form and serialized for transmission as specified in {{KP26}}.
+A short polynomial r is generated from ρ by the CBD sampling procedure, written as r := CBD(ρ). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form.
 
 After encapsulation is completed, the n-bit random message SHOULD be securely erased.
 
