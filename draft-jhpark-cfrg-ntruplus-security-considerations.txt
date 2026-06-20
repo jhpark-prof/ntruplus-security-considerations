@@ -98,7 +98,7 @@ Table of Contents
 
 1.  Introduction
 
-   The transition to Post-Quantum Cryptography (PQC) is driving the
+   The transition to post-quantum cryptography (PQC) is driving the
    deployment of post-quantum key encapsulation mechanisms (KEMs) in
    Internet protocols.  KEMs are expected to replace or complement
    traditional Diffie-Hellman key establishment mechanisms in protocols
@@ -474,11 +474,10 @@ Table of Contents
    possession of the correct shared secret.  When implicit rejection is
    used, decapsulation always produces a candidate shared secret, and
    therefore the verifier must rely on the subsequent protocol message
-   to determine whether decapsulation succeeded correctly.  In contrast,
-   with explicit rejection, invalid ciphertexts are detected and
-   rejected during decapsulation itself, allowing the protocol to
-   terminate immediately upon failure and simplifying the protocol
-   logic.
+   to determine whether decapsulation succeeded.  In contrast, with
+   explicit rejection, invalid ciphertexts are detected and rejected
+   during decapsulation itself, allowing the protocol to terminate
+   immediately upon failure and simplifying the protocol logic.
 
    Therefore, explicit rejection does not generally provide a
    significant advantage in authenticated key-exchange protocols that
