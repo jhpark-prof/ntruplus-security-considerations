@@ -20,6 +20,7 @@ venue:
   type: "Research Group"
   mail: "cfrg@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/cfrg"
+  subscribe: "https://mailman.irtf.org/mailman/listinfo/cfrg"
   github: "jhpark-prof/ntruplus-security-considerations"
   latest: "https://jhpark-prof.github.io/ntruplus-security-considerations/draft-jhpark-cfrg-ntruplus-security-considerations.html"
 
