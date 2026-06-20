@@ -266,7 +266,7 @@ The candidate value m', together with the stored public-key hash F(pk), is used 
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
-To avoid creating an error oracle, implementations SHOULD perform both validation checks unconditionally and combine their results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed.
+To avoid creating an error oracle, implementations SHOULD perform both validation checks in constant time, avoid data-dependent branches on intermediate validation results, and combine the results before making a single acceptance or rejection decision. Implementations SHOULD NOT reveal which validation check failed.
 
 Upon completion of decapsulation, all intermediate values, including recovered polynomials, messages, randomness values, and candidate shared secrets, SHOULD be securely erased.
 
