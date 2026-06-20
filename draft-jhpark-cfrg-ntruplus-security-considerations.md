@@ -244,11 +244,11 @@ The NTRU+ key-generation algorithm does not include a Pairwise Consistency Test 
 
 ### Encapsulation
 
-The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
+The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message m. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
 
 The shared secret K and an intermediate randomness ρ are derived from the random message and F(pk) using the hash function H. The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
-The ciphertext is computed as c = hr + m, where h is the public key, r is a short polynomial derived from the intermediate randomness ρ, and m is encoded as a polynomial using a semi-generalized one-time pad (SOTP) operation. Both r and m are short polynomials with coefficients sampled according to the CBD. The resulting ciphertext c is represented in NTT form. This representation is preserved during transmission and is used directly as input to the decapsulation algorithm.
+The ciphertext is computed as c = hr + M, where h is the public key, r is a short polynomial derived from the intermediate randomness ρ, and M is obtained by encoding the n-bit message m as a polynomial using a semi-generalized one-time pad (SOTP) operation. Both r and M are short polynomials with coefficients sampled according to the CBD. The resulting ciphertext c is represented in NTT form. This representation is preserved during transmission and is used directly as input to the decapsulation algorithm.
 
 After encapsulation is completed, the n-bit random message SHOULD be securely erased.
 
@@ -258,9 +258,9 @@ The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a cip
 
 The algorithm SHOULD first verify that the ciphertext c is properly formed. In particular, each coefficient of the ciphertext polynomial MUST be checked to ensure that it lies within the valid range defined by the modulus q. If this validation fails, the algorithm MUST return a decapsulation error.
 
-Otherwise, candidate values of r and m are recovered from the ciphertext c using f and h^{-1}. The recovered values are then processed using the SOTP decoding operation, yielding an n-bit message m' (denoted as m' in Algorithm 13 of {{KP26}}). This decoding procedure does not immediately signal failure; instead, it always produces an n-bit output message at this stage, regardless of whether a decoding error has occurred.
+Otherwise, candidate values of r and M are recovered from the ciphertext c using f and h^{-1}. The recovered encoded message polynomial M is then processed using the SOTP decoding operation, yielding either an n-bit message m' or a decoding failure ⊥.
 
-The SOTP-recovered message m', together with the stored public-key hash F(pk), is used to derive both a candidate shared secret K and an intermediate randomness ρ'. A short polynomial r' is then generated from ρ' according to the CBD.
+The SOTP decoding result, together with the stored public-key hash F(pk), is used to derive both a candidate shared secret K and an intermediate randomness ρ'. A short polynomial r' is then generated from ρ' according to the CBD.
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered polynomial r matches the regenerated polynomial r'. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
@@ -270,16 +270,16 @@ Upon completion of decapsulation, all intermediate values, including recovered p
 
 ## Parameter Sets
 
-NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 summarizes the sizes of the cryptographic material associated with each parameter set, together with the estimated classical security levels obtained using the Lattice Estimator {{APS15}}.
+NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 summarizes the ring parameters and the sizes of the cryptographic material associated with each parameter set, together with the estimated classical security levels obtained using the Lattice Estimator {{APS15}}.
 
-| Parameter | pk | sk | ct | ss | security |
-|---|---:|---:|---:|---:|---:|
-| NTRU+768 | 1152 | 2336 | 1152 | 32 | 156 |
-| NTRU+864 | 1296 | 2624 | 1296 | 32 | 179 |
-| NTRU+1152 | 1728 | 3488 | 1728 | 32 | 248 |
-{: title="Parameter-set sizes and estimated classical security levels"}
+| Parameter | n | q | pk | sk | ct | ss | security |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| NTRU+768 | 768 | 3457 | 1152 | 2336 | 1152 | 32 | 156 |
+| NTRU+864 | 864 | 3457 | 1296 | 2624 | 1296 | 32 | 179 |
+| NTRU+1152 | 1152 | 3457 | 1728 | 3488 | 1728 | 32 | 248 |
+{: title="Parameter-set ring parameters, sizes, and estimated classical security levels"}
 
-In Table 1, pk = public key, sk = private key, ct = ciphertext, and ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
+In Table 1, n is the polynomial degree, q is the coefficient modulus, pk = public key, sk = private key, ct = ciphertext, and ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.
 
 Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to a single CPU core and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.
 
