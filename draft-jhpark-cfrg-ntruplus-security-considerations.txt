@@ -351,7 +351,7 @@ Table of Contents
    efficient in both the optimized C and AVX2 implementations.  Even for
    NTRU+1152, where rejection sampling is more frequent, the expected
    number of samples for each of f and g remains below 1.5, and the
-   resulting overhead is modest in the measured implementations.
+   resulting overhead remains small in the measured implementations.
 
    The use of rejection sampling implies that the execution time of key
    generation is not strictly constant and exhibits some variance.
