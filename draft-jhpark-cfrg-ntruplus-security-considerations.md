@@ -260,7 +260,7 @@ The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a cip
 
 The algorithm SHOULD first verify that the ciphertext c is properly formed. In particular, each coefficient of the ciphertext polynomial MUST be checked to ensure that it lies within the valid range defined by the modulus q. If this validation fails, the algorithm MUST return a decapsulation error.
 
-Otherwise, a candidate encoded message polynomial M is first recovered from c using f. A candidate randomness polynomial r is then recovered from c and M using h^{-1}. Using simplified notation, the SOTP decoding operation computes m' := Decode(M, G(r)), yielding either an n-bit message m' or a decoding failure ⊥.
+Otherwise, a candidate encoded message polynomial M is first recovered from c by using f and reducing the result modulo 3. A candidate randomness polynomial r is then recovered as r = (c - M)h^{-1}. Using simplified notation, the SOTP decoding operation computes m' := Decode(M, G(r)), yielding either an n-bit message m' or a decoding failure ⊥.
 
 When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness ρ' as (K, ρ') := H(m', F(pk)). A regenerated polynomial r' is then computed as r' := CBD(ρ').
 
