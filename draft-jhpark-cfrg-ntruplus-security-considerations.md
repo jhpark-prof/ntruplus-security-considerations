@@ -246,9 +246,9 @@ The NTRU+ key-generation algorithm does not include a Pairwise Consistency Test 
 
 The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message m. The message SHOULD be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
 
-The shared secret K and an intermediate randomness ρ are derived from the random message and F(pk) using the hash function H. The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
+The shared secret K and an intermediate randomness ρ are derived as (K, ρ) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
-The ciphertext is computed as c = hr + M, where h is the public key, r is a short polynomial derived from the intermediate randomness ρ, and M is obtained by encoding the n-bit message m as a polynomial using a semi-generalized one-time pad (SOTP) operation. Both r and M are short polynomials with coefficients sampled according to the CBD. The resulting ciphertext c is represented in NTT form. This representation is preserved during transmission and is used directly as input to the decapsulation algorithm.
+Using simplified notation, a short polynomial r is generated as r := CBD(ρ), and the encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation. The ciphertext is then computed as c = hr + M. Both r and M are short polynomials with coefficients sampled according to the CBD. The resulting ciphertext polynomial is computed in NTT form and serialized for transmission by encoding its coefficients as 12-bit values. During decapsulation, the serialized ciphertext is decoded back into its NTT-domain representation and used directly as input to the decapsulation algorithm.
 
 After encapsulation is completed, the n-bit random message SHOULD be securely erased.
 
