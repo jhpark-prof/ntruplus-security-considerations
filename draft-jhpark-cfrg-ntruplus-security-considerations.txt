@@ -254,11 +254,12 @@ Table of Contents
             | NTRU+1152 | 1728 | 3488 | 1728 | 32 |      248 |
             +-----------+------+------+------+----+----------+
 
-                                 Table 1
+                Table 1: Parameter-set sizes and estimated
+                        classical security levels
 
-   Table 1: pk = public key, sk = private key, ct = ciphertext, ss =
-   shared secret.  Key, ciphertext, and shared-secret sizes are given in
-   bytes.  Security levels are given in bits.
+   In Table 1, pk = public key, sk = private key, ct = ciphertext, and
+   ss = shared secret.  Key, ciphertext, and shared-secret sizes are
+   given in bytes.  Security levels are given in bits.
 
    Table 2 summarizes end-to-end single-core performance measurements of
    the NTRU+ KEM API.  Measurements were taken on an Intel Core i7-8700K
@@ -283,11 +284,10 @@ Table of Contents
          | AVX2        | NTRU+1152 |  84,452 |  81,498 | 123,876 |
          +-------------+-----------+---------+---------+---------+
 
-                                  Table 2
+            Table 2: Single-core end-to-end KEM API performance
 
-   Table 2: Single-core end-to-end KEM API performance in operations per
-   second.  Key generation and encapsulation include randomness
-   generation performed by the implementation.
+   Key generation and encapsulation include randomness generation
+   performed by the implementation.
 
 3.  NTRU+ Security Considerations
 

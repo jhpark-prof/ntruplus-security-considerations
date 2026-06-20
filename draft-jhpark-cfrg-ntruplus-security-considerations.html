@@ -1305,8 +1305,11 @@ encryption, and KEM-based authentication.<a href="#section-abstract-1" class="pi
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-parameter-sets" class="section-name selfRef">Parameter Sets</a>
         </h3>
 <p id="section-2.2-1">NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and NTRU+1152. Table 1 summarizes the sizes of the cryptographic material associated with each parameter set, together with the estimated classical security levels obtained using the Lattice Estimator <span>[<a href="#APS15" class="cite xref">APS15</a>]</span>.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<span id="name-parameter-set-sizes-and-est"></span><table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-parameter-set-sizes-and-est" class="selfRef">Parameter-set sizes and estimated classical security levels</a>
+          </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Parameter</th>
@@ -1344,10 +1347,13 @@ encryption, and KEM-based authentication.<a href="#section-abstract-1" class="pi
             </tr>
           </tbody>
         </table>
-<p id="section-2.2-3">Table 1: pk = public key, sk = private key, ct = ciphertext, ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">In Table 1, pk = public key, sk = private key, ct = ciphertext, and ss = shared secret. Key, ciphertext, and shared-secret sizes are given in bytes. Security levels are given in bits.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.2-4">Table 2 summarizes end-to-end single-core performance measurements of the NTRU+ KEM API. Measurements were taken on an Intel Core i7-8700K CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3. Each benchmark was pinned to a single CPU core and measured for 10 seconds per operation. Values are rounded to the nearest operation per second.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<table class="center" id="table-2">
-          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<span id="name-single-core-end-to-end-kem-"></span><table class="center" id="table-2">
+          <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-single-core-end-to-end-kem-" class="selfRef">Single-core end-to-end KEM API performance</a>
+          </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Impl.</th>
@@ -1402,7 +1408,7 @@ encryption, and KEM-based authentication.<a href="#section-abstract-1" class="pi
             </tr>
           </tbody>
         </table>
-<p id="section-2.2-6">Table 2: Single-core end-to-end KEM API performance in operations per second. Key generation and encapsulation include randomness generation performed by the implementation.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
+<p id="section-2.2-6">Key generation and encapsulation include randomness generation performed by the implementation.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
