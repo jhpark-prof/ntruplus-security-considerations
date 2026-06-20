@@ -333,7 +333,7 @@ We note that NTRU+ may admit a more direct form of Pair-wise Consistency Test (P
 
 ## Input Entropy of Keying Material
 
-The encapsulation algorithm takes as input an n-bit random message, from which a 32-byte shared secret is derived. This contrasts with ML-KEM, where the encapsulation process always starts from a fixed 32-byte random value. As a result, NTRU+ naturally supports a larger pool of input entropy.
+The encapsulation algorithm internally samples an n-bit random message, from which a 32-byte shared secret is derived. This contrasts with ML-KEM, where the encapsulation process always starts from a fixed 32-byte random value. As a result, NTRU+ uses a larger amount of internal encapsulation randomness.
 
 While a 32-byte randomness source is sufficient for currently targeted security levels, the NTRU+ design retains the flexibility to accommodate larger amounts of input entropy should future cryptographic requirements evolve.
 
