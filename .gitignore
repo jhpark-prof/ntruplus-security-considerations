@@ -15,10 +15,12 @@
 /.vscode/
 /lib
 /node_modules/
-/versioned/
 Gemfile.lock
 archive.json
 draft-jhpark-cfrg-ntruplus-security-considerations.xml
 package-lock.json
 report.xml
 !requirements.txt
+!/versioned/
+!/versioned/*.xml
+!/versioned/*.txt

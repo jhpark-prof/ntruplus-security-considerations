@@ -1,0 +1,784 @@
+
+
+
+
+Crypto Forum                                                  J. H. Park
+Internet-Draft                                      Sangmyung University
+Intended status: Informational                                    J. Kim
+Expires: 23 December 2026                               Korea University
+                                                                 M. Shin
+                                                               ITCEN PNS
+                                                            21 June 2026
+
+
+                     NTRU+ Security Considerations
+         draft-jhpark-cfrg-ntruplus-security-considerations-00
+
+Abstract
+
+   This document describes security considerations for the use of NTRU+
+   in Internet protocols.  NTRU+ is a lattice-based key encapsulation
+   mechanism (KEM) based on the NTRU framework and designed to provide
+   IND-CCA2 security.  The document summarizes the scheme structure and
+   parameter sets, and discusses implementation and protocol
+   considerations including key-generation rejection sampling, input
+   validation, pairwise consistency testing, explicit rejection
+   behavior, randomness requirements, and side-channel leakage during
+   decapsulation.  It is intended to help protocol designers and
+   implementers use NTRU+ safely in settings such as authenticated key
+   exchange, public key encryption, and KEM-based authentication.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at https://jhpark-
+   prof.github.io/ntruplus-security-considerations/draft-jhpark-cfrg-
+   ntruplus-security-considerations.html.  Status information for this
+   document may be found at https://datatracker.ietf.org/doc/draft-
+   jhpark-cfrg-ntruplus-security-considerations/.
+
+   Discussion of this document takes place on the Crypto Forum Research
+   Group mailing list (mailto:cfrg@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/cfrg.  Subscribe at
+   https://mailman.irtf.org/mailman/listinfo/cfrg.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/jhpark-prof/ntruplus-security-considerations.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 1]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 23 December 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  NTRU+ Overview  . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Scheme Description  . . . . . . . . . . . . . . . . . . .   3
+       2.1.1.  Key Generation  . . . . . . . . . . . . . . . . . . .   4
+       2.1.2.  Encapsulation . . . . . . . . . . . . . . . . . . . .   4
+       2.1.3.  Decapsulation . . . . . . . . . . . . . . . . . . . .   5
+     2.2.  Parameter Sets  . . . . . . . . . . . . . . . . . . . . .   6
+   3.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+     3.1.  Correctness and Security Properties . . . . . . . . . . .   7
+     3.2.  Rejection Sampling in Key Generation  . . . . . . . . . .   8
+     3.3.  Pairwise Consistency Testing Considerations . . . . . . .   9
+     3.4.  Input Entropy of Keying Material  . . . . . . . . . . . .   9
+     3.5.  Input Validation Checks in Encapsulation and
+           Decapsulation . . . . . . . . . . . . . . . . . . . . . .   9
+     3.6.  Explicit Rejection in Decapsulation . . . . . . . . . . .  10
+     3.7.  Side-Channel Leakage in Hash Computation  . . . . . . . .  11
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+   5.  Informative References  . . . . . . . . . . . . . . . . . . .  12
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  14
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 2]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+1.  Introduction
+
+   The transition to post-quantum cryptography (PQC) is driving the
+   deployment of post-quantum key encapsulation mechanisms (KEMs) in
+   Internet protocols.  KEMs are expected to replace or complement
+   traditional Diffie-Hellman key establishment mechanisms in protocols
+   such as TLS, IKE, and other secure communication systems.
+
+   This document provides security considerations for NTRU+, a lattice-
+   based KEM derived from the NTRU lattice framework.  NTRU+ [KP26] was
+   selected as one of the final KEM algorithms in the Korean post-
+   quantum cryptography competition in January 2025 [KpqC2025],
+   following a two-year public evaluation process that included open
+   cryptanalysis and security review [CHH23] [BCG24].  NTRU+ is designed
+   to achieve IND-CCA2 security and supports multiple parameter sets
+   targeting different security levels.
+
+   NTRU+ can be used in a variety of protocol settings.  As a KEM, it
+   can replace or complement ephemeral Diffie-Hellman in authenticated
+   key exchange protocols, including TLS [RFC8446], SSH [RFC4253], and
+   IKE [RFC7296].  It can also be used in public key encryption
+   frameworks such as HPKE [RFC9180], where a KEM is used to establish
+   shared secret material between communicating parties.
+
+   The purpose of this document is to provide guidance for the safe use
+   of NTRU+ in IETF protocols.  The document summarizes security
+   properties, implementation requirements, validation procedures, side-
+   channel considerations, and protocol-relevant caveats that protocol
+   designers and implementers should consider when deploying NTRU+ in
+   practice.
+
+2.  NTRU+ Overview
+
+2.1.  Scheme Description
+
+   Following Lyubashevsky and Seiler [LS19], NTRU+ operates over the
+   polynomial ring R_q = Z_q[x]/<Phi_{3n}(x)>, where Phi_{3n}(x) = x^n -
+   x^{n/2} + 1 is a cyclotomic trinomial and q denotes the coefficient
+   modulus.  For all three NTRU+ parameter sets specified in this
+   document, the coefficient modulus is q = 3457.  The use of a
+   cyclotomic trinomial enables efficient polynomial multiplication
+   through the Number Theoretic Transform (NTT).  Secret polynomials are
+   sampled according to a centered binomial distribution (CBD), where
+   each coefficient is generated by subtracting one uniformly random bit
+   from another, resulting in values in {-1, 0, 1}.
+
+   NTRU+ uses three hash functions, denoted by F, G, and H, which are
+   instantiated with SHAKE-256 in [KP26].
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 3]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   Throughout this document, equations are written in simplified
+   polynomial notation.  The corresponding NTT-domain computations and
+   byte encodings are specified in [KP26].
+
+2.1.1.  Key Generation
+
+   The key generation algorithm (see Section 6.3.1 of [KP26]) internally
+   samples independent 32-byte random seeds, which should be generated
+   by an approved random bit generator (RBG), and produces a public key
+   pk and a private key sk.  The seeds are used to generate short
+   polynomials f' and g', respectively, whose coefficients are sampled
+   according to the CBD.
+
+   Key generation employs rejection sampling to ensure that both
+   polynomials f = 3f' + 1 and g = 3g' are invertible in the ring R_q.
+   If a generated polynomial f is not invertible, a new 32-byte seed is
+   used to generate a replacement polynomial.  The same procedure is
+   applied to g.
+
+   The public key consists of the polynomial h represented in NTT form.
+   The private key consists of (f, h^{-1}, F(pk)), where both f and
+   h^{-1} are stored in NTT form and F(pk) denotes a hash of the public
+   key.  After key generation is completed, the random seeds used to
+   generate f and g should be securely erased.
+
+2.1.2.  Encapsulation
+
+   The encapsulation algorithm (see Section 6.3.1 of [KP26]) internally
+   samples an n-bit random message m.  The message should be generated
+   using an approved RBG.  The algorithm outputs a ciphertext c and a
+   32-byte shared secret K.
+
+   The shared secret K and an intermediate randomness \rho are derived
+   as (K, \rho) = H(m, F(pk)).  The inclusion of F(pk) in this
+   derivation is intended to provide resistance against multi-target
+   attacks.
+
+   A short polynomial r is generated from \rho by the CBD sampling
+   procedure, written as r = CBD(\rho).  The encoded message polynomial
+   is computed as M = Encode(m, G(r)) using the semi-generalized one-
+   time pad (SOTP) operation, which is designed so that the coefficients
+   of M follow the same CBD distribution.  The ciphertext is then
+   computed as c = hr + M.  The resulting ciphertext polynomial is
+   represented in NTT form.
+
+   After encapsulation is completed, the n-bit random message should be
+   securely erased.
+
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 4]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+2.1.3.  Decapsulation
+
+   The decapsulation algorithm (see Section 6.3.1 of [KP26]) takes as
+   input a ciphertext c and the private key sk = (f, h^{-1}, F(pk)).
+   The algorithm outputs either a 32-byte shared secret K for a valid
+   ciphertext or a decapsulation error for an invalid ciphertext.  Thus,
+   NTRU+ employs explicit rejection for invalid ciphertexts rather than
+   deriving and returning a pseudorandom key.
+
+   The algorithm should first verify that the ciphertext c is properly
+   formed.  In particular, each coefficient of the ciphertext polynomial
+   must be checked to ensure that it lies within the valid range defined
+   by the modulus q.  If this validation fails, the algorithm must
+   return a decapsulation error.
+
+   Otherwise, a candidate encoded message polynomial M' is first
+   recovered as M' = (c f mod q) mod 3.  A candidate randomness
+   polynomial r' is then recovered as r' = (c - M') h^{-1}. The SOTP
+   decoding operation computes m' = Decode(M', G(r')), where m' is
+   either an n-bit message or the failure symbol `error'.
+
+   When an n-bit candidate message m' is obtained, it is used together
+   with the stored hash of the public key F(pk) to derive both a
+   candidate shared secret K and an intermediate randomness \rho' as (K,
+   \rho') = H(m', F(pk)).  A regenerated polynomial r'' is then computed
+   as r'' = CBD(\rho').
+
+   Subsequently, two validation checks are performed.  The first
+   verifies that the SOTP decoding completed without error.  The second
+   verifies that the recovered randomness polynomial r' matches the
+   regenerated polynomial r''.  Only if both checks succeed is the
+   shared secret K accepted; otherwise, the decapsulation algorithm
+   returns a decapsulation error.
+
+   To avoid creating an error oracle, implementations should perform
+   both validation checks in constant time, avoid data-dependent
+   branches on intermediate validation results, and combine the results
+   before making a single acceptance or rejection decision.
+   Implementations should not reveal which validation check failed.
+
+   Upon completion of decapsulation, all intermediate values, including
+   recovered polynomials, messages, randomness values, and candidate
+   shared secrets, should be securely erased.
+
+
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 5]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+2.2.  Parameter Sets
+
+   NTRU+ provides three parameter sets: NTRU+768, NTRU+864, and
+   NTRU+1152.  Table 1 summarizes the ring parameters and the sizes of
+   the cryptographic material associated with each parameter set,
+   together with the estimated classical security levels obtained using
+   the Lattice Estimator [APS15].
+
+     +===========+======+======+======+======+======+====+==========+
+     | Parameter |    n |    q |   pk |   sk |   ct | ss | security |
+     +===========+======+======+======+======+======+====+==========+
+     | NTRU+768  |  768 | 3457 | 1152 | 2336 | 1152 | 32 |      156 |
+     +-----------+------+------+------+------+------+----+----------+
+     | NTRU+864  |  864 | 3457 | 1296 | 2624 | 1296 | 32 |      179 |
+     +-----------+------+------+------+------+------+----+----------+
+     | NTRU+1152 | 1152 | 3457 | 1728 | 3488 | 1728 | 32 |      248 |
+     +-----------+------+------+------+------+------+----+----------+
+
+       Table 1: Parameter-set ring parameters, sizes, and estimated
+                        classical security levels
+
+   In Table 1, n is the polynomial degree, q is the coefficient modulus,
+   pk = public key, sk = private key, ct = ciphertext, and ss = shared
+   secret.  Key, ciphertext, and shared-secret sizes are given in bytes.
+   Security levels are given in bits.
+
+   Table 2 summarizes end-to-end single-core performance measurements of
+   the NTRU+ KEM API.  Measurements were taken on an Intel Core i7-8700K
+   CPU @ 3.70GHz on Linux/x86_64 using clang 18.1.3 with -O3.  Each
+   benchmark was pinned to a single CPU core and measured for 10 seconds
+   per operation.  Values are rounded to the nearest operation per
+   second.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 6]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+         +=============+===========+=========+=========+=========+
+         | Impl.       | Parameter |  KeyGen |   Encap |   Decap |
+         +=============+===========+=========+=========+=========+
+         | Optimized C | NTRU+768  |  41,225 |  53,641 |  47,787 |
+         +-------------+-----------+---------+---------+---------+
+         | Optimized C | NTRU+864  |  37,519 |  46,834 |  41,458 |
+         +-------------+-----------+---------+---------+---------+
+         | Optimized C | NTRU+1152 |  24,858 |  36,333 |  31,108 |
+         +-------------+-----------+---------+---------+---------+
+         | AVX2        | NTRU+768  | 138,191 | 120,052 | 196,101 |
+         +-------------+-----------+---------+---------+---------+
+         | AVX2        | NTRU+864  | 125,406 | 102,974 | 154,965 |
+         +-------------+-----------+---------+---------+---------+
+         | AVX2        | NTRU+1152 |  84,452 |  81,498 | 123,876 |
+         +-------------+-----------+---------+---------+---------+
+
+            Table 2: Single-core end-to-end KEM API performance
+
+   Key generation and encapsulation include randomness generation
+   performed by the implementation.
+
+3.  Security Considerations
+
+3.1.  Correctness and Security Properties
+
+   Historically, achieving negligible worst-case correctness error has
+   been a significant challenge in NTRU-based public key encryption
+   schemes.  In classical NTRU encryption, an adversary may construct
+   ciphertexts of the form c = hr + M by choosing r or M maliciously,
+   making it difficult to achieve negligible worst-case correctness
+   errors for all possible ciphertexts.
+
+   To address this issue, NTRU+ employs two techniques.  First, the
+   polynomial r is deterministically derived through the Fujisaki-
+   Okamoto (FO) transform.  Second, the encoded message polynomial M is
+   generated through the SOTP encoding procedure.  As a result, an
+   adversary no longer has direct control over the values of r and M
+   appearing in honestly generated ciphertexts.
+
+   This result builds upon [DHK23] and extends the analysis to the CBD
+   sampling used in NTRU+, where r is generated by the CBD sampling
+   procedure and the SOTP encoding makes the coefficients of M follow
+   the same CBD distribution.  Consequently, the worst-case correctness
+   error of NTRU+ is effectively identical to the average-case
+   correctness error over honestly generated ciphertexts.
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 7]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   As with other lattice-based KEMs, decapsulation failures may
+   potentially leak information about the private key.  However, NTRU+
+   is designed so that the probability of a decapsulation failure for an
+   honestly generated ciphertext is negligible, rendering such failures
+   irrelevant in practice.
+
+   The IND-CCA2 security of NTRU+ is based on the hardness of the NTRU
+   and Ring-LWE problems and, in particular, admits a tight security
+   reduction in the random oracle model.  The security proof begins with
+   the construction of an underlying NTRU encryption scheme (denoted as
+   GenNTRU in [KP26]), which is OW-CPA secure under the NTRU and Ring-
+   LWE assumptions.
+
+   The explicit rejection of invalid ciphertexts follows from the
+   \gamma-spreadness property of GenNTRU, while the re-encryption-free
+   FO transform relies on the rigidity properties of both GenNTRU and
+   SOTP.
+
+3.2.  Rejection Sampling in Key Generation
+
+   As described in Section 2.1, key generation repeats the sampling of f
+   and g until both polynomials are invertible in the ring R_q.
+
+   The probability that a randomly generated small polynomial is
+   invertible in R_q can be heuristically estimated from the full
+   factorization of R_q over F_q.  For NTRU+768, NTRU+864, and
+   NTRU+1152, the relevant factor degrees are 2, 3, and 1, respectively,
+   giving approximate per-polynomial invertibility probabilities of
+   about 1.00 for (1 - 3457^{-2})^{768/2}, about 1.00 for (1 -
+   3457^{-3})^{864/3}, and about 0.72 for (1 - 3457^{-1})^{1152}.
+   Consequently, the probability that both f and g are invertible is
+   approximately 1.00 for NTRU+768 and NTRU+864, and approximately 0.51
+   for NTRU+1152.
+
+   As shown in Table 2, key generation in NTRU+ remains computationally
+   efficient in both the optimized C and AVX2 implementations.  Even for
+   NTRU+1152, where rejection sampling is more frequent, the expected
+   number of samples for each of f and g remains below 1.5, and the
+   resulting overhead remains small in the measured implementations.
+
+   The use of rejection sampling implies that the execution time of key
+   generation is not strictly constant and exhibits some variance.
+   However, this timing variation depends only on the randomness used
+   during key generation and does not affect the security of the
+   generated key pair.
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 8]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   Polynomial inversion in NTT representation can be efficiently
+   implemented using the hierarchical batch inversion technique of
+   [KCP26], which applies Montgomery's trick to reduce the number of
+   field inversions.
+
+3.3.  Pairwise Consistency Testing Considerations
+
+   The NTRU+ key-generation procedure described above does not include a
+   Pairwise Consistency Test (PCT).  Implementations seeking FIPS 140-3
+   validation may perform a PCT following CMVP guidance by executing an
+   encapsulation and a subsequent decapsulation using a newly generated
+   key pair and verifying that both operations derive the same shared
+   secret.  While such a test can reliably detect non-functional key
+   pairs, it provides only limited assurance against malformed or fault-
+   induced keys that continue to operate correctly on honestly generated
+   ciphertexts.
+
+   We note that NTRU+ may admit a more direct form of Pairwise
+   Consistency Test (PCT) than the encapsulation-decapsulation test
+   described above.  In particular, it may be possible to verify certain
+   mathematical consistency relations between the public key pk = h and
+   the private key sk = (f, h^{-1}, F(pk)) by exploiting properties of
+   the SOTP encoding and the CBD-based construction used in NTRU+.
+   Exploring such an approach is beyond the scope of this document.
+   Moreover, incorporating such a PCT would likely require modest
+   modifications to the current key-generation algorithm.
+
+3.4.  Input Entropy of Keying Material
+
+   The encapsulation algorithm internally samples an n-bit random
+   message, from which a 32-byte shared secret is derived.  This
+   contrasts with ML-KEM, where the encapsulation process always starts
+   from a fixed 32-byte random value.  As a result, NTRU+ uses a larger
+   amount of internal encapsulation randomness.
+
+   While a 32-byte randomness source is sufficient for currently
+   targeted security levels, the NTRU+ design retains the flexibility to
+   accommodate larger amounts of input entropy should future
+   cryptographic requirements evolve.
+
+3.5.  Input Validation Checks in Encapsulation and Decapsulation
+
+   During encapsulation, an implementation should perform a type check
+   on the public key pk before processing.  If this validation fails,
+   encapsulation must not continue.  NTRU+ does not require an explicit
+   modulus check on each coefficient of pk during encapsulation.  Any
+   modification of the public key results in a mismatch between the
+   value F(pk) stored in the private key and the hash value derived from
+
+
+
+Park, et al.            Expires 23 December 2026                [Page 9]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   the modified public key during encapsulation, causing the
+   decapsulation procedure to reject the resulting ciphertext.
+
+   During decapsulation, an implementation should perform both a
+   ciphertext type check and an explicit modulus check on the received
+   ciphertext.  If either validation fails, decapsulation must not
+   continue.  In particular, the explicit modulus check is essential
+   because the decapsulation procedure of NTRU+ does not perform a re-
+   encryption and ciphertext equality check as part of the FO transform.
+
+   The modulus check is particularly important in NTRU+, where the
+   modulus is q = 3457 and each ciphertext coefficient is represented as
+   a 12-bit integer.  The gap between the modulus q and the 12-bit
+   representation permits multiple encodings of the same element in the
+   ring R_q.  Without an explicit modulus check, this ambiguity can
+   potentially lead to IND-CCA2 attacks.
+
+   For example, if a ciphertext coefficient is equal to 1, an adversary
+   may replace it with 3458.  Both values can be represented as valid
+   12-bit integers and satisfy 3458 = 1 (mod 3457).  As a result, an
+   adversary can construct a ciphertext that is distinct from a target
+   ciphertext at the bit-string level while remaining equivalent modulo
+   q, thereby violating the uniqueness of ciphertext encodings assumed
+   by the security proof.
+
+   In addition, an implementation should verify that the private key has
+   the expected length and corresponds to the intended parameter set
+   before performing decapsulation.  If this validation fails,
+   decapsulation must not continue.  Unlike the ciphertext modulus check
+   described above, this private-key validation is primarily intended to
+   detect malformed inputs and implementation errors rather than to
+   enforce a security property of the NTRU+ construction itself.
+
+3.6.  Explicit Rejection in Decapsulation
+
+   Unlike ML-KEM, which returns a pseudorandom shared secret for an
+   invalid ciphertext, NTRU+ provides explicit rejection and returns a
+   decapsulation error.  Protocol designers should understand both the
+   benefits and limitations of this design choice.
+
+   In many authenticated key-exchange protocols, explicit rejection is
+   not strictly necessary.  Even if a KEM returns a pseudorandom shared
+   secret for an invalid ciphertext, the resulting key material is
+   typically used to derive symmetric-key encryption keys and MAC keys.
+   Subsequent protocol steps, such as MAC verification or key
+   confirmation, will fail if the two parties derive different shared
+   secrets.  As a result, protocols such as TLS, SSH, and IKE can safely
+   operate with either implicit rejection or explicit rejection.
+
+
+
+Park, et al.            Expires 23 December 2026               [Page 10]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   However, explicit rejection becomes more useful when a KEM is
+   employed in a public key encryption setting.  In such applications,
+   the derived shared secret is often used directly to decrypt a
+   protected payload.  If implicit rejection is used, the recipient must
+   first determine whether the derived key is valid before attempting
+   decryption.  This typically requires an additional integrity check,
+   such as an authenticated-encryption tag or a MAC.  By contrast,
+   explicit rejection allows the recipient to terminate processing
+   immediately upon detection of an invalid ciphertext.
+
+   A similar consideration arises when a KEM is used as an
+   authentication mechanism.  In a typical KEM-based authentication
+   protocol, the verifier sends a ciphertext and the prover responds
+   with an additional protocol message, such as a MAC, to demonstrate
+   possession of the correct shared secret.  When implicit rejection is
+   used, decapsulation always produces a candidate shared secret, and
+   therefore the verifier must rely on the subsequent protocol message
+   to determine whether decapsulation succeeded.  In contrast, with
+   explicit rejection, invalid ciphertexts are detected and rejected
+   during decapsulation itself, allowing the protocol to terminate
+   immediately upon failure and simplifying the protocol logic.
+
+   Therefore, explicit rejection does not generally provide a
+   significant advantage in authenticated key-exchange protocols that
+   already incorporate key confirmation, authenticated encryption, or
+   equivalent integrity checks.  Nevertheless, it can simplify protocol
+   design in public key encryption and KEM-based authentication settings
+   by allowing invalid ciphertexts to be detected directly during
+   decapsulation, rather than requiring validation through subsequent
+   use of the derived key.
+
+3.7.  Side-Channel Leakage in Hash Computation
+
+   The following discussion is intended to illustrate a potential attack
+   strategy and does not constitute a complete attack analysis.  For a
+   target ciphertext c = hr + M, let r and M denote the randomness
+   polynomial and encoded message polynomial recovered during
+   decapsulation.  Leakage from the computation of G(r) may reveal
+   information about M.  This observation is similar in spirit to the
+   side-channel attack of [UXT21], which exploits leakage during the
+   hash computation performed as part of KEM decapsulation.
+
+
+
+
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026               [Page 11]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   One possible attack proceeds as follows.  Let c be a target
+   ciphertext and let c_i denote one of its coefficients.  The adversary
+   guesses that the corresponding encoded-message coefficient M_i is
+   zero and constructs a modified ciphertext c' by adding 1 to c_i.  The
+   modified ciphertext is then submitted to a decapsulation device
+   holding the unknown private key sk, while the adversary observes
+   side-channel information associated with the computation of G(r).
+
+   If the adversary can determine that the same polynomial r is hashed
+   during the decapsulation of both c and c', then information about M_i
+   is obtained.  In particular, when M_i=0, the modification causes the
+   recovered encoded message polynomial to change from M to M', while
+   the relation c' - M' = c - M continues to hold with high probability.
+   Consequently, (c' - M') h^{-1} = r, and the same polynomial r is
+   supplied to the hash function.  Detecting this event through side-
+   channel observations allows the adversary to distinguish whether
+   M_i=0, thereby revealing information about the decrypted message.
+
+   Implementations should ensure that the computation of G(r) is
+   performed in constant time and does not reveal information about its
+   input through timing, power consumption, cache access, or other side
+   channels.
+
+   One important distinction between the side-channel attack of [UXT21]
+   and the attack described above is that the former may lead to
+   recovery of private-key information, whereas the latter is limited to
+   leakage of information about the decrypted message.  As a result, the
+   latter does not directly threaten the long-term secrecy of the
+   private key.  Nevertheless, both attacks demonstrate the need for
+   side-channel-resistant implementations of the hash computation
+   performed during decapsulation.
+
+4.  IANA Considerations
+
+   This document has no IANA actions.
+
+5.  Informative References
+
+   [APS15]    Albrecht, M. R., Player, R., and S. Scott, "On the
+              concrete hardness of Learning with Errors", 2015,
+              <https://eprint.iacr.org/2015/046>.
+
+
+
+
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026               [Page 12]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   [BCG24]    Bernstein, D. J., Cottaar, J., Giandomenico, E. D.,
+              Hövelmanns, K., Hülsing, A., Kudinov, M., Lange, T.,
+              Mahzoun, M., Meijers, M., Pellegrini, A., Ravagnani, A.,
+              Ritsch, S., Schäge, S., Tang, T., Trimoska, M.,
+              Vorstermans, M., and F. J. Weber, "Report on evaluation of
+              KpqC Round-2 candidates", 2024,
+              <https://eprint.iacr.org/2024/2077>.
+
+   [CHH23]    Cottaar, J., Hövelmanns, K., Hülsing, A., Lange, T.,
+              Mahzoun, M., Pellegrini, A., Ravagnani, A., Schäge, S.,
+              Trimoska, M., and B. de. Weger, "Report on evaluation of
+              KpqC candidates", 2023,
+              <https://eprint.iacr.org/2023/1853>.
+
+   [DHK23]    Duman, J., Hövelmanns, K., Kiltz, E., Lyubashevsky, V.,
+              Seiler, G., and D. Unruh, "A Thorough Treatment of Highly-
+              Efficient NTRU Instantiations", 2023,
+              <https://link.springer.com/
+              chapter/10.1007/978-3-031-31368-4_3>.
+
+   [KCP26]    Kim, J., Cho, H., and J. H. Park, "Accelerating NTRU+ Key
+              Generation via Hierarchical Batch Inversion", 2026,
+              <https://eprint.iacr.org/2026/1191>.
+
+   [KP26]     Kim, J. and J. H. Park, "NTRU+: Compact Construction of
+              NTRU Using Simple Encoding Method", 2026,
+              <https://www.kpqc.or.kr/images/pdf2/NTRU%2B.pdf>.
+
+   [KpqC2025] KpqC, "KpqC Competition Second-Round Final Results
+              Announcement", 2025,
+              <https://www.kpqc.or.kr/contents/03_exhibit/
+              board.html?board_id=board_competition&mode=view&no=9>.
+
+   [LS19]     Lyubashevsky, V. and G. Seiler, "NTTRU: Truly Fast NTRU
+              Using NTT", 2019,
+              <https://tches.iacr.org/index.php/TCHES/article/
+              view/8293>.
+
+   [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
+              January 2006, <https://www.rfc-editor.org/rfc/rfc4253>.
+
+   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
+              Kivinen, "Internet Key Exchange Protocol Version 2
+              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
+              2014, <https://www.rfc-editor.org/rfc/rfc7296>.
+
+
+
+
+
+Park, et al.            Expires 23 December 2026               [Page 13]
+
+Internet-Draft        NTRU+ Security Considerations            June 2026
+
+
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [RFC9180]  Barnes, R., Bhargavan, K., Lipp, B., and C. Wood, "Hybrid
+              Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
+              February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
+
+   [UXT21]    Ueno, R., Xagawa, K., Tanaka, Y., Ito, A., Takahashi, J.,
+              and N. Homma, "Curse of Re-encryption: A Generic Power/EM
+              Analysis on Post-Quantum KEMs", 2021,
+              <https://tches.iacr.org/index.php/TCHES/article/
+              view/9298>.
+
+Acknowledgments
+
+Authors' Addresses
+
+   Jong Hwan Park
+   Sangmyung University
+   Email: jhpark@smu.ac.kr
+
+
+   Jonghyun Kim
+   Korea University
+   Email: yoswuk@korea.ac.kr
+
+
+   MinKyu Shin
+   ITCEN PNS
+   Email: mkshin@itcen.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Park, et al.            Expires 23 December 2026               [Page 14]
