@@ -574,7 +574,7 @@ Table of Contents
    [KpqC2025] KpqC, "KpqC Competition Second-Round Final Results
               Announcement", 2025,
               <https://www.kpqc.or.kr/contents/03_exhibit/
-              board.html?board_id=board_competition&cate=&mode=view&no=9>.
+              board.html?board_id=board_competition&mode=view&no=9>.
 
    [LS19]     Lyubashevsky, V. and G. Seiler, "NTTRU: Truly Fast NTRU
               Using NTT", 2019,
