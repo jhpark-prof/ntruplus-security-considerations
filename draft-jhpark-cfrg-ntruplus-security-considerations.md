@@ -47,7 +47,7 @@ informative:
       -
         org: KpqC
     date: 2025
-    target: "https://www.kpqc.or.kr/contents/03_exhibit/board.html?board_id=board_competition&cate=&mode=view&no=9"
+    target: "https://www.kpqc.or.kr/contents/03_exhibit/board.html?board_id=board_competition&mode=view&no=9"
 
   KP26:
     title: "NTRU+: Compact Construction of NTRU Using Simple Encoding Method"
