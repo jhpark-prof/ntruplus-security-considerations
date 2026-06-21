@@ -329,9 +329,10 @@ Table of Contents
    GenNTRU in [KP26]), which is OW-CPA secure under the NTRU and Ring-
    LWE assumptions.
 
-   The explicit rejection of invalid ciphertexts follows from the gamma-
-   spreadness property of GenNTRU, while the re-encryption-free FO
-   transform relies on the rigidity properties of both GenNTRU and SOTP.
+   The explicit rejection of invalid ciphertexts follows from the
+   \gamma-spreadness property of GenNTRU, while the re-encryption-free
+   FO transform relies on the rigidity properties of both GenNTRU and
+   SOTP.
 
 3.2.  Rejection Sampling in Key Generation
 
