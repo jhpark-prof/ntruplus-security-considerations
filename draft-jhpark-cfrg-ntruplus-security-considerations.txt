@@ -26,7 +26,7 @@ Abstract
    behavior, randomness requirements, and side-channel leakage during
    decapsulation.  It is intended to help protocol designers and
    implementers use NTRU+ safely in settings such as authenticated key
-   exchange, public-key encryption, and KEM-based authentication.
+   exchange, public key encryption, and KEM-based authentication.
 
 About This Document
 
@@ -116,7 +116,7 @@ Table of Contents
    NTRU+ can be used in a variety of protocol settings.  As a KEM, it
    can replace or complement ephemeral Diffie-Hellman in authenticated
    key exchange protocols, including TLS [RFC8446], SSH [RFC4253], and
-   IKE [RFC7296].  It can also be used in public-key encryption
+   IKE [RFC7296].  It can also be used in public key encryption
    frameworks such as HPKE [RFC9180], where a KEM is used to establish
    shared secret material between communicating parties.
 
@@ -215,10 +215,10 @@ Table of Contents
    either an n-bit message or the failure symbol `error'.
 
    When an n-bit candidate message m' is obtained, it is used together
-   with the stored public-key hash F(pk) to derive both a candidate
-   shared secret K and an intermediate randomness \rho' as (K, \rho') =
-   H(m', F(pk)).  A regenerated polynomial r'' is then computed as r'' =
-   CBD(\rho').
+   with the stored hash of the public key F(pk) to derive both a
+   candidate shared secret K and an intermediate randomness \rho' as (K,
+   \rho') = H(m', F(pk)).  A regenerated polynomial r'' is then computed
+   as r'' = CBD(\rho').
 
    Subsequently, two validation checks are performed.  The first
    verifies that the SOTP decoding completed without error.  The second
@@ -296,7 +296,7 @@ Table of Contents
 3.1.  Correctness and Security Properties
 
    Historically, achieving negligible worst-case correctness error has
-   been a significant challenge in NTRU-based public-key encryption
+   been a significant challenge in NTRU-based public key encryption
    schemes.  In classical NTRU encryption, an adversary may construct
    ciphertexts of the form c = hr + M by choosing r or M maliciously,
    making it difficult to achieve negligible worst-case correctness
@@ -404,15 +404,14 @@ Table of Contents
 
 3.5.  Input Validation Checks in Encapsulation and Decapsulation
 
-   During encapsulation, an implementation should perform a public-key
-   type check on the public key pk before processing.  If this
-   validation fails, encapsulation must not continue.  NTRU+ does not
-   require an explicit modulus check on each coefficient of pk during
-   encapsulation.  Any modification of the public key results in a
-   mismatch between the value F(pk) stored in the private key and the
-   hash value derived from the modified public key during encapsulation,
-   causing the decapsulation procedure to reject the resulting
-   ciphertext.
+   During encapsulation, an implementation should perform a type check
+   on the public key pk before processing.  If this validation fails,
+   encapsulation must not continue.  NTRU+ does not require an explicit
+   modulus check on each coefficient of pk during encapsulation.  Any
+   modification of the public key results in a mismatch between the
+   value F(pk) stored in the private key and the hash value derived from
+   the modified public key during encapsulation, causing the
+   decapsulation procedure to reject the resulting ciphertext.
 
    During decapsulation, an implementation should perform both a
    ciphertext type check and an explicit modulus check on the received
@@ -461,7 +460,7 @@ Table of Contents
    operate with either implicit rejection or explicit rejection.
 
    However, explicit rejection becomes more useful when a KEM is
-   employed in a public-key encryption setting.  In such applications,
+   employed in a public key encryption setting.  In such applications,
    the derived shared secret is often used directly to decrypt a
    protected payload.  If implicit rejection is used, the recipient must
    first determine whether the derived key is valid before attempting
@@ -486,7 +485,7 @@ Table of Contents
    significant advantage in authenticated key-exchange protocols that
    already incorporate key confirmation, authenticated encryption, or
    equivalent integrity checks.  Nevertheless, it can simplify protocol
-   design in public-key encryption and KEM-based authentication settings
+   design in public key encryption and KEM-based authentication settings
    by allowing invalid ciphertexts to be detected directly during
    decapsulation, rather than requiring validation through subsequent
    use of the derived key.
