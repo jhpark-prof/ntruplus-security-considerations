@@ -313,14 +313,14 @@ As with other lattice-based KEMs, decapsulation failures may potentially leak in
 
 The IND-CCA2 security of NTRU+ is based on the hardness of the NTRU and Ring-LWE problems and, in particular, admits a tight security reduction in the random oracle model. The security proof begins with the construction of an underlying NTRU encryption scheme (denoted as GenNTRU in {{KP26}}), which is OW-CPA secure under the NTRU and Ring-LWE assumptions.
 
-The explicit rejection of invalid ciphertexts follows from the 𝛾-spreadness property of GenNTRU, while the re-encryption-free FO transform relies on the rigidity properties of both GenNTRU and SOTP.
+The explicit rejection of invalid ciphertexts follows from the gamma-spreadness property of GenNTRU, while the re-encryption-free FO transform relies on the rigidity properties of both GenNTRU and SOTP.
 
 
 ## Rejection Sampling in Key Generation
 
 As described in Section 2.1, key generation repeats the sampling of f and g until both polynomials are invertible in the ring R_q.
 
-The probability that a randomly generated small polynomial is invertible in R_q can be heuristically estimated from the full factorization of R_q over F_q. For NTRU+768, NTRU+864, and NTRU+1152, the relevant factor degrees are 2, 3, and 1, respectively, giving approximate per-polynomial invertibility probabilities of (1 - 3457^{-2})^{768/2} ≈ 1.00, (1 - 3457^{-3})^{864/3} ≈ 1.00, and (1 - 3457^{-1})^{1152} ≈ 0.72. Consequently, the probability that both f and g are invertible is approximately 1.00 for NTRU+768 and NTRU+864, and approximately 0.51 for NTRU+1152.
+The probability that a randomly generated small polynomial is invertible in R_q can be heuristically estimated from the full factorization of R_q over F_q. For NTRU+768, NTRU+864, and NTRU+1152, the relevant factor degrees are 2, 3, and 1, respectively, giving approximate per-polynomial invertibility probabilities of about 1.00 for (1 - 3457^{-2})^{768/2}, about 1.00 for (1 - 3457^{-3})^{864/3}, and about 0.72 for (1 - 3457^{-1})^{1152}. Consequently, the probability that both f and g are invertible is approximately 1.00 for NTRU+768 and NTRU+864, and approximately 0.51 for NTRU+1152.
 
 As shown in Table 2, key generation in NTRU+ remains computationally efficient in both the optimized C and AVX2 implementations. Even for NTRU+1152, where rejection sampling is more frequent, the expected number of samples for each of f and g remains below 1.5, and the resulting overhead remains small in the measured implementations.
 
