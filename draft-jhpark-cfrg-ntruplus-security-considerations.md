@@ -248,9 +248,9 @@ The public key consists of the polynomial h represented in NTT form. The private
 
 The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message m. The message should be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
 
-The shared secret K and an intermediate randomness ρ are derived as (K, ρ) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
+The shared secret K and an intermediate randomness ρ are derived as (K, \rho) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
-A short polynomial r is generated from ρ by the CBD sampling procedure, written as r := CBD(ρ). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form.
+A short polynomial r is generated from \rho by the CBD sampling procedure, written as r := CBD(\rho). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form.
 
 After encapsulation is completed, the n-bit random message should be securely erased.
 
@@ -260,9 +260,9 @@ The decapsulation algorithm (see Section 6.3.1 of {{KP26}}) takes as input a cip
 
 The algorithm should first verify that the ciphertext c is properly formed. In particular, each coefficient of the ciphertext polynomial must be checked to ensure that it lies within the valid range defined by the modulus q. If this validation fails, the algorithm must return a decapsulation error.
 
-Otherwise, a candidate encoded message polynomial M' is first recovered as M' = (c f mod q) mod 3. A candidate randomness polynomial r' is then recovered as r' = (c - M') h^{-1}. The SOTP decoding operation computes m' := Decode(M', G(r')), where m' is either an n-bit message or the failure symbol ⊥.
+Otherwise, a candidate encoded message polynomial M' is first recovered as M' = (c f mod q) mod 3. A candidate randomness polynomial r' is then recovered as r' = (c - M') h^{-1}. The SOTP decoding operation computes m' := Decode(M', G(r')), where m' is either an n-bit message or the failure symbol `error'.
 
-When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness ρ' as (K, ρ') := H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' := CBD(ρ').
+When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness \rho' as (K, \rho') := H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' := CBD(\rho').
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r' matches the regenerated polynomial r''. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
@@ -350,7 +350,7 @@ During decapsulation, an implementation should perform both a ciphertext type ch
 
 The modulus check is particularly important in NTRU+, where the modulus is q = 3457 and each ciphertext coefficient is represented as a 12-bit integer. The gap between the modulus q and the 12-bit representation permits multiple encodings of the same element in the ring R_q. Without an explicit modulus check, this ambiguity can potentially lead to IND-CCA2 attacks.
 
-For example, if a ciphertext coefficient is equal to 1, an adversary may replace it with 3458. Both values can be represented as valid 12-bit integers and satisfy 3458 ≡ 1 (mod 3457). As a result, an adversary can construct a ciphertext that is distinct from a target ciphertext at the bit-string level while remaining equivalent modulo q, thereby violating the uniqueness of ciphertext encodings assumed by the security proof.
+For example, if a ciphertext coefficient is equal to 1, an adversary may replace it with 3458. Both values can be represented as valid 12-bit integers and satisfy 3458 = 1 (mod 3457). As a result, an adversary can construct a ciphertext that is distinct from a target ciphertext at the bit-string level while remaining equivalent modulo q, thereby violating the uniqueness of ciphertext encodings assumed by the security proof.
 
 In addition, an implementation should verify that the private key has the expected length and corresponds to the intended parameter set before performing decapsulation. If this validation fails, decapsulation must not continue. Unlike the ciphertext modulus check described above, this private-key validation is primarily intended to detect malformed inputs and implementation errors rather than to enforce a security property of the NTRU+ construction itself.
 
