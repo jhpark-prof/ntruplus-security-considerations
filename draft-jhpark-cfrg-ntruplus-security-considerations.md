@@ -248,9 +248,9 @@ The public key consists of the polynomial h represented in NTT form. The private
 
 The encapsulation algorithm (see Section 6.3.1 of {{KP26}}) internally samples an n-bit random message m. The message should be generated using an approved RBG. The algorithm outputs a ciphertext c and a 32-byte shared secret K.
 
-The shared secret K and an intermediate randomness ρ are derived as (K, \rho) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
+The shared secret K and an intermediate randomness ρ are derived as (K, ρ) := H(m, F(pk)). The inclusion of F(pk) in this derivation is intended to provide resistance against multi-target attacks.
 
-A short polynomial r is generated from \rho by the CBD sampling procedure, written as r := CBD(\rho). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form.
+A short polynomial r is generated from ρ by the CBD sampling procedure, written as r := CBD(ρ). The encoded message polynomial is computed as M := Encode(m, G(r)) using the semi-generalized one-time pad (SOTP) operation, which is designed so that the coefficients of M follow the same CBD distribution. The ciphertext is then computed as c = hr + M. The resulting ciphertext polynomial is represented in NTT form.
 
 After encapsulation is completed, the n-bit random message should be securely erased.
 
@@ -262,7 +262,7 @@ The algorithm should first verify that the ciphertext c is properly formed. In p
 
 Otherwise, a candidate encoded message polynomial M' is first recovered as M' = (c f mod q) mod 3. A candidate randomness polynomial r' is then recovered as r' = (c - M') h^{-1}. The SOTP decoding operation computes m' := Decode(M', G(r')), where m' is either an n-bit message or the failure symbol `error'.
 
-When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness \rho' as (K, \rho') := H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' := CBD(\rho').
+When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness \ρ' as (K, ρ') := H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' := CBD(ρ').
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r' matches the regenerated polynomial r''. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
