@@ -209,7 +209,7 @@ implementation and protocol considerations including key-generation rejection
 sampling, input validation, pairwise consistency testing, explicit rejection
 behavior, randomness requirements, and side-channel leakage during
 decapsulation.  It is intended to help protocol designers and implementers use
-NTRU+ safely in settings such as authenticated key exchange, public-key
+NTRU+ safely in settings such as authenticated key exchange, public key
 encryption, and KEM-based authentication.
 
 
@@ -221,7 +221,7 @@ The transition to post-quantum cryptography (PQC) is driving the deployment of p
 
 This document provides security considerations for NTRU+, a lattice-based KEM derived from the NTRU lattice framework. NTRU+ {{KP26}} was selected as one of the final KEM algorithms in the Korean post-quantum cryptography competition in January 2025 {{KpqC2025}}, following a two-year public evaluation process that included open cryptanalysis and security review {{CHH23}} {{BCG24}}. NTRU+ is designed to achieve IND-CCA2 security and supports multiple parameter sets targeting different security levels.
 
-NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS {{?RFC8446}}, SSH {{?RFC4253}}, and IKE {{?RFC7296}}. It can also be used in public-key encryption frameworks such as HPKE {{?RFC9180}}, where a KEM is used to establish shared secret material between communicating parties.
+NTRU+ can be used in a variety of protocol settings. As a KEM, it can replace or complement ephemeral Diffie-Hellman in authenticated key exchange protocols, including TLS {{?RFC8446}}, SSH {{?RFC4253}}, and IKE {{?RFC7296}}. It can also be used in public key encryption frameworks such as HPKE {{?RFC9180}}, where a KEM is used to establish shared secret material between communicating parties.
 
 The purpose of this document is to provide guidance for the safe use of NTRU+ in IETF protocols. The document summarizes security properties, implementation requirements, validation procedures, side-channel considerations, and protocol-relevant caveats that protocol designers and implementers should consider when deploying NTRU+ in practice.
 
@@ -262,7 +262,7 @@ The algorithm should first verify that the ciphertext c is properly formed. In p
 
 Otherwise, a candidate encoded message polynomial M' is first recovered as M' = (c f mod q) mod 3. A candidate randomness polynomial r' is then recovered as r' = (c - M') h^{-1}. The SOTP decoding operation computes m' = Decode(M', G(r')), where m' is either an n-bit message or the failure symbol `error'.
 
-When an n-bit candidate message m' is obtained, it is used together with the stored public-key hash F(pk) to derive both a candidate shared secret K and an intermediate randomness \rho' as (K, \rho') = H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' = CBD(\rho').
+When an n-bit candidate message m' is obtained, it is used together with the stored hash of the public key F(pk) to derive both a candidate shared secret K and an intermediate randomness \rho' as (K, \rho') = H(m', F(pk)). A regenerated polynomial r'' is then computed as r'' = CBD(\rho').
 
 Subsequently, two validation checks are performed. The first verifies that the SOTP decoding completed without error. The second verifies that the recovered randomness polynomial r' matches the regenerated polynomial r''. Only if both checks succeed is the shared secret K accepted; otherwise, the decapsulation algorithm returns a decapsulation error.
 
@@ -302,7 +302,7 @@ Key generation and encapsulation include randomness generation performed by the 
 
 ## Correctness and Security Properties
 
-Historically, achieving negligible worst-case correctness error has been a significant challenge in NTRU-based public-key encryption schemes. In classical NTRU encryption, an adversary may construct ciphertexts of the form c = hr + M by choosing r or M maliciously, making it difficult to achieve negligible worst-case correctness errors for all possible ciphertexts.
+Historically, achieving negligible worst-case correctness error has been a significant challenge in NTRU-based public key encryption schemes. In classical NTRU encryption, an adversary may construct ciphertexts of the form c = hr + M by choosing r or M maliciously, making it difficult to achieve negligible worst-case correctness errors for all possible ciphertexts.
 
 To address this issue, NTRU+ employs two techniques. First, the polynomial r is deterministically derived through the Fujisaki-Okamoto (FO) transform. Second, the encoded message polynomial M is generated through the SOTP encoding procedure. As a result, an adversary no longer has direct control over the values of r and M appearing in honestly generated ciphertexts.
 
@@ -344,7 +344,7 @@ While a 32-byte randomness source is sufficient for currently targeted security 
 
 ## Input Validation Checks in Encapsulation and Decapsulation
 
-During encapsulation, an implementation should perform a public-key type check on the public key pk before processing. If this validation fails, encapsulation must not continue. NTRU+ does not require an explicit modulus check on each coefficient of pk during encapsulation. Any modification of the public key results in a mismatch between the value F(pk) stored in the private key and the hash value derived from the modified public key during encapsulation, causing the decapsulation procedure to reject the resulting ciphertext.
+During encapsulation, an implementation should perform a type check on the public key pk before processing. If this validation fails, encapsulation must not continue. NTRU+ does not require an explicit modulus check on each coefficient of pk during encapsulation. Any modification of the public key results in a mismatch between the value F(pk) stored in the private key and the hash value derived from the modified public key during encapsulation, causing the decapsulation procedure to reject the resulting ciphertext.
 
 During decapsulation, an implementation should perform both a ciphertext type check and an explicit modulus check on the received ciphertext. If either validation fails, decapsulation must not continue. In particular, the explicit modulus check is essential because the decapsulation procedure of NTRU+ does not perform a re-encryption and ciphertext equality check as part of the FO transform.
 
@@ -360,11 +360,11 @@ Unlike ML-KEM, which returns a pseudorandom shared secret for an invalid ciphert
 
 In many authenticated key-exchange protocols, explicit rejection is not strictly necessary. Even if a KEM returns a pseudorandom shared secret for an invalid ciphertext, the resulting key material is typically used to derive symmetric-key encryption keys and MAC keys. Subsequent protocol steps, such as MAC verification or key confirmation, will fail if the two parties derive different shared secrets. As a result, protocols such as TLS, SSH, and IKE can safely operate with either implicit rejection or explicit rejection.
 
-However, explicit rejection becomes more useful when a KEM is employed in a public-key encryption setting. In such applications, the derived shared secret is often used directly to decrypt a protected payload. If implicit rejection is used, the recipient must first determine whether the derived key is valid before attempting decryption. This typically requires an additional integrity check, such as an authenticated-encryption tag or a MAC. By contrast, explicit rejection allows the recipient to terminate processing immediately upon detection of an invalid ciphertext.
+However, explicit rejection becomes more useful when a KEM is employed in a public key encryption setting. In such applications, the derived shared secret is often used directly to decrypt a protected payload. If implicit rejection is used, the recipient must first determine whether the derived key is valid before attempting decryption. This typically requires an additional integrity check, such as an authenticated-encryption tag or a MAC. By contrast, explicit rejection allows the recipient to terminate processing immediately upon detection of an invalid ciphertext.
 
 A similar consideration arises when a KEM is used as an authentication mechanism. In a typical KEM-based authentication protocol, the verifier sends a ciphertext and the prover responds with an additional protocol message, such as a MAC, to demonstrate possession of the correct shared secret. When implicit rejection is used, decapsulation always produces a candidate shared secret, and therefore the verifier must rely on the subsequent protocol message to determine whether decapsulation succeeded. In contrast, with explicit rejection, invalid ciphertexts are detected and rejected during decapsulation itself, allowing the protocol to terminate immediately upon failure and simplifying the protocol logic.
 
-Therefore, explicit rejection does not generally provide a significant advantage in authenticated key-exchange protocols that already incorporate key confirmation, authenticated encryption, or equivalent integrity checks. Nevertheless, it can simplify protocol design in public-key encryption and KEM-based authentication settings by allowing invalid ciphertexts to be detected directly during decapsulation, rather than requiring validation through subsequent use of the derived key.
+Therefore, explicit rejection does not generally provide a significant advantage in authenticated key-exchange protocols that already incorporate key confirmation, authenticated encryption, or equivalent integrity checks. Nevertheless, it can simplify protocol design in public key encryption and KEM-based authentication settings by allowing invalid ciphertexts to be detected directly during decapsulation, rather than requiring validation through subsequent use of the derived key.
 
 
 ## Side-Channel Leakage in Hash Computation
